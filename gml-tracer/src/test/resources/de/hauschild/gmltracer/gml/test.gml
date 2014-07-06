@@ -1,0 +1,9 @@
+if
+addi
+"foobar"
+123
+123.456
+/foo
+bar
+true
+false
