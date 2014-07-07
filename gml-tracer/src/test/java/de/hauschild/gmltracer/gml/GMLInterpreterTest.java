@@ -26,7 +26,10 @@ import java.io.IOException;
 import java.util.Stack;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -44,6 +47,15 @@ public class GMLInterpreterTest {
   public void twelveFactorial() throws IOException {
     final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(getClass().getResourceAsStream("fact.gml")));
     final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
+    gmlParser.addErrorListener(new BaseErrorListener() {
+
+      @Override
+      public void syntaxError(final Recognizer<?, ?> theRecognizer, final Object theOffendingSymbol, final int theLine,
+          final int theCharPositionInLine, final String theMsg, final RecognitionException theE) {
+        Assert.fail(theMsg);
+      }
+
+    });
     final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
     final GMLInterpreter gmlInterpreter = new GMLInterpreter(gmlExtractor);
     final Stack<Token> tokenStack = gmlInterpreter.interpret();

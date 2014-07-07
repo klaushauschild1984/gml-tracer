@@ -30,7 +30,7 @@ package de.hauschild.gmltracer.gml.token.base;
 public class StringToken extends AbstractValueToken<String> {
 
   public StringToken(final String string) {
-    super(string.substring(1, string.length() - 1));
+    super(string);
   }
 
   @Override

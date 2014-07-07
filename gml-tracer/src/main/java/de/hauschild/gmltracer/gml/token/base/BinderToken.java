@@ -35,7 +35,7 @@ import de.hauschild.gmltracer.gml.token.Token;
 public class BinderToken extends AbstractValueToken<String> {
 
   public BinderToken(final String binder) {
-    super(binder.substring(1));
+    super(binder);
   }
 
   @Override

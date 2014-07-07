@@ -1,25 +1,31 @@
 grammar GML;
 
-tokenList: (tokenGroup | Whitespace)*;
+NEWLINE: '\r'? '\n' -> channel(HIDDEN);
+
+WITHESPACE : [ \r\t\n]+ -> channel(HIDDEN);
+
+LINE_COMMENT: '%' ~[\n]* '\n' -> skip;
+
+LETTER: [a-zA-Z];
+
+DIGIT: [0-9];
+
+NUMBER_CONTENT: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
+
+fragment STRING_CONTENT: [a-zA-Z0-9 .]+;
+
+tokenList: tokenGroup*;
 
 tokenGroup: token
           | function
           | array
           ;
 
-function: Whitespace* '{' Whitespace* tokenList Whitespace* '}' Whitespace*;
+function: '{' tokenList '}';
 
-array: Whitespace* '[' Whitespace* tokenList Whitespace* ']' Whitespace*;
+array: '[' tokenList ']';
 
-token: Operator
-     | Binder
-     | Bool
-     | Identifier
-     | Number
-     | String
-     ;
-
-Operator: 'addi'
+operator: 'addi'
         | 'subi'
         | 'muli'
         | 'divi'
@@ -28,20 +34,21 @@ Operator: 'addi'
         | 'apply'
         ;
 
-Identifier: Letter (Letter | Digit | '-' | '_')*;
+binder: '/' reference=identifier;
 
-Binder: '/' Identifier;
+bool: 'true' | 'false';
 
-Bool: 'true'
-    | 'false'
-    ;
+token: operator
+     | binder
+     | bool
+     | identifier
+     | number
+     | string
+     ;
 
-Number: '-'? ('1'..'9') Digit* ('.' Digit+)?;
+number: value=NUMBER_CONTENT;
 
-String: '"' (Letter | Digit)+ '"';
+identifier: LETTER (LETTER | DIGIT | '-' | '_')*;
 
-Letter: ('a'..'z' | 'A'..'Z');
+string: '"' value=STRING_CONTENT '"';
 
-Digit: ('0'..'9');
-
-Whitespace : (' ' | '\t' | '\r'? '\n');

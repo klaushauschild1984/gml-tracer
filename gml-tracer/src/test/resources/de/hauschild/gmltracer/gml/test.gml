@@ -1,5 +1,5 @@
 if
-addi
+subi
 "foobar"
 123
 123.456

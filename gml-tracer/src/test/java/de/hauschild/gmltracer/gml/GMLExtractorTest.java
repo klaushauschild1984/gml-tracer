@@ -26,8 +26,12 @@ import java.io.IOException;
 import java.util.List;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import de.hauschild.gmltracer.gml.token.Token;
@@ -39,14 +43,34 @@ import de.hauschild.gmltracer.gml.token.Token;
  */
 public class GMLExtractorTest {
 
-  @Test
-  public void twelveFactorialTest() throws IOException {
-    final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(getClass().getResourceAsStream("fact.gml")));
+  @DataProvider
+  public Object[][] dataProvider() {
+    return new Object[][] {
+      /*
+       * { "fact.gml", 6, },
+       */{
+          "test.gml", 9,
+      },
+    };
+  }
+
+  @Test(dataProvider = "dataProvider")
+  public void twelveFactorialTest(final String fileName, final int expectedTokenCount) throws IOException {
+    final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(getClass().getResourceAsStream(fileName)));
     final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
+    gmlParser.addErrorListener(new BaseErrorListener() {
+
+      @Override
+      public void syntaxError(final Recognizer<?, ?> theRecognizer, final Object theOffendingSymbol, final int theLine,
+          final int theCharPositionInLine, final String theMsg, final RecognitionException theE) {
+        Assert.fail(theMsg);
+      }
+
+    });
     final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
     final List<Token> tokens = gmlExtractor.extract();
     System.out.println(tokens);
-    Assert.assertEquals(tokens.size(), 6);
+    Assert.assertEquals(tokens.size(), expectedTokenCount);
   }
 
 }

@@ -27,8 +27,13 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import de.hauschild.gmltracer.gml.GMLParser.ArrayContext;
+import de.hauschild.gmltracer.gml.GMLParser.BinderContext;
+import de.hauschild.gmltracer.gml.GMLParser.BoolContext;
 import de.hauschild.gmltracer.gml.GMLParser.FunctionContext;
-import de.hauschild.gmltracer.gml.GMLParser.TokenContext;
+import de.hauschild.gmltracer.gml.GMLParser.IdentifierContext;
+import de.hauschild.gmltracer.gml.GMLParser.NumberContext;
+import de.hauschild.gmltracer.gml.GMLParser.OperatorContext;
+import de.hauschild.gmltracer.gml.GMLParser.StringContext;
 import de.hauschild.gmltracer.gml.token.Token;
 import de.hauschild.gmltracer.gml.token.base.ArrayToken;
 import de.hauschild.gmltracer.gml.token.base.BinderToken;
@@ -65,6 +70,22 @@ public class GMLExtractor {
       };
 
       @Override
+      public List<Token> visitBinder(final BinderContext ctx) {
+        final List<Token> result = defaultResult();
+        final BinderToken binderToken = new BinderToken(ctx.reference.getText());
+        result.add(binderToken);
+        return result;
+      };
+
+      @Override
+      public List<Token> visitBool(final BoolContext ctx) {
+        final List<Token> result = defaultResult();
+        final BooleanToken booleanToken = new BooleanToken(ctx.getText());
+        result.add(booleanToken);
+        return result;
+      };
+
+      @Override
       public List<Token> visitFunction(final FunctionContext ctx) {
         final List<Token> functionContent = visitChildren(ctx);
         final FunctionToken functionToken = new FunctionToken(functionContent);
@@ -74,27 +95,34 @@ public class GMLExtractor {
       };
 
       @Override
-      public List<Token> visitToken(final TokenContext ctx) {
+      public List<Token> visitIdentifier(final IdentifierContext ctx) {
         final List<Token> result = defaultResult();
-        if (ctx.Operator() != null) {
-          final OperatorToken operatorToken = new OperatorToken(ctx.Operator().getText());
-          result.add(operatorToken);
-        } else if (ctx.Binder() != null) {
-          final BinderToken binderToken = new BinderToken(ctx.Binder().getText());
-          result.add(binderToken);
-        } else if (ctx.Bool() != null) {
-          final BooleanToken booleanToken = new BooleanToken(ctx.Bool().getText());
-          result.add(booleanToken);
-        } else if (ctx.Identifier() != null) {
-          final IdentifierToken identifierToken = new IdentifierToken(ctx.Identifier().getText());
-          result.add(identifierToken);
-        } else if (ctx.Number() != null) {
-          final NumberToken numberToken = new NumberToken(ctx.Number().getText());
-          result.add(numberToken);
-        } else if (ctx.String() != null) {
-          final StringToken stringToken = new StringToken(ctx.String().getText());
-          result.add(stringToken);
-        }
+        final IdentifierToken identifierToken = new IdentifierToken(ctx.getText());
+        result.add(identifierToken);
+        return result;
+      };
+
+      @Override
+      public List<Token> visitNumber(final NumberContext ctx) {
+        final List<Token> result = defaultResult();
+        final NumberToken numberToken = new NumberToken(ctx.value.getText());
+        result.add(numberToken);
+        return result;
+      };
+
+      @Override
+      public List<Token> visitOperator(final OperatorContext ctx) {
+        final List<Token> result = defaultResult();
+        final OperatorToken operatorToken = new OperatorToken(ctx.getText());
+        result.add(operatorToken);
+        return result;
+      };
+
+      @Override
+      public List<Token> visitString(final StringContext ctx) {
+        final List<Token> result = defaultResult();
+        final StringToken stringToken = new StringToken(ctx.value.getText());
+        result.add(stringToken);
         return result;
       };
 
