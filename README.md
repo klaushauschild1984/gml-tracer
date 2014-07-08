@@ -1,4 +1,4 @@
 gml-tracer
 ==========
 
-Raytracer with stack based scene descrition language (GML)
+Raytracer with stack based scene description language (GML)
