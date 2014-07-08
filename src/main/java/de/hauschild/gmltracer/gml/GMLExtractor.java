@@ -72,7 +72,7 @@ public class GMLExtractor {
       @Override
       public List<Token> visitBinder(final BinderContext ctx) {
         final List<Token> result = defaultResult();
-        final BinderToken binderToken = new BinderToken(ctx.reference.getText());
+        final BinderToken binderToken = new BinderToken(ctx.getText().substring(1));
         result.add(binderToken);
         return result;
       };
@@ -105,7 +105,7 @@ public class GMLExtractor {
       @Override
       public List<Token> visitNumber(final NumberContext ctx) {
         final List<Token> result = defaultResult();
-        final NumberToken numberToken = new NumberToken(ctx.value.getText());
+        final NumberToken numberToken = new NumberToken(ctx.getText());
         result.add(numberToken);
         return result;
       };
@@ -121,7 +121,7 @@ public class GMLExtractor {
       @Override
       public List<Token> visitString(final StringContext ctx) {
         final List<Token> result = defaultResult();
-        final StringToken stringToken = new StringToken(ctx.value.getText());
+        final StringToken stringToken = new StringToken(ctx.getText().substring(1, ctx.getText().length() - 1));
         result.add(stringToken);
         return result;
       };

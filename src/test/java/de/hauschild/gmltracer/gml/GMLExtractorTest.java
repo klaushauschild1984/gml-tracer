@@ -45,17 +45,22 @@ public class GMLExtractorTest {
 
   @DataProvider
   public Object[][] dataProvider() {
-    return new Object[][] {
-      /*
-       * { "fact.gml", 6, },
-       */{
-          "test.gml", 9,
-      },
+    return new Object[][]{
+        {
+            "fact.gml",
+            6,
+        },
+
+        {
+            "test.gml",
+            9,
+        },
+
     };
   }
 
   @Test(dataProvider = "dataProvider")
-  public void twelveFactorialTest(final String fileName, final int expectedTokenCount) throws IOException {
+  public void gmlExtractorTest(final String fileName, final int expectedTokenCount) throws IOException {
     final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(getClass().getResourceAsStream(fileName)));
     final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
     gmlParser.addErrorListener(new BaseErrorListener() {
@@ -72,5 +77,4 @@ public class GMLExtractorTest {
     System.out.println(tokens);
     Assert.assertEquals(tokens.size(), expectedTokenCount);
   }
-
 }
