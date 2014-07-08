@@ -1,42 +1,54 @@
 grammar GML;
 
-NEWLINE: '\r'? '\n' -> channel(HIDDEN);
-
-WITHESPACE : [ \r\t\n]+ -> channel(HIDDEN);
-
 LINE_COMMENT: '%' ~[\n]* '\n' -> skip;
 
-LETTER: [a-zA-Z];
+WITHESPACE : [ \r\n\t]+ -> skip;
 
-DIGIT: [0-9];
+fragment LETTER: [a-zA-Z];
 
-NUMBER_CONTENT: '-'? [1-9] DIGIT* ('.' DIGIT+)?;
+fragment DIGIT: [0-9];
 
-fragment STRING_CONTENT: [a-zA-Z0-9 .]+;
+TRUE: 'true';
+FALSE: 'false';
 
-tokenList: tokenGroup*;
+ADDI:   'addi';
+SUBI:   'subi';
+MULI:   'muli';
+DIVI:   'divi';
+LESSI:  'lessi';
+IF:     'if';
+APPLY:  'apply';
 
-tokenGroup: token
-          | function
-          | array
-          ;
+IDENTIFIER: LETTER (LETTER | DIGIT | '-' | '_')*;
+
+BINDER: '/' IDENTIFIER;
+
+STRING: '"' [a-zA-Z0-9 .]+ '"';
+
+NUMBER: '-'? DIGIT+ ('.' DIGIT+)?;
+
+operator: ADDI
+        | SUBI
+        | MULI
+        | DIVI
+        | LESSI
+        | IF
+        | APPLY
+        ;
+
+bool: TRUE | FALSE;
+
+identifier: IDENTIFIER;
+
+binder: BINDER;
+
+number: NUMBER;
+
+string: STRING;
 
 function: '{' tokenList '}';
 
 array: '[' tokenList ']';
-
-operator: 'addi'
-        | 'subi'
-        | 'muli'
-        | 'divi'
-        | 'lessi'
-        | 'if'
-        | 'apply'
-        ;
-
-binder: '/' reference=identifier;
-
-bool: 'true' | 'false';
 
 token: operator
      | binder
@@ -46,9 +58,9 @@ token: operator
      | string
      ;
 
-number: value=NUMBER_CONTENT;
+tokenGroup: token
+          | function
+          | array
+          ;
 
-identifier: LETTER (LETTER | DIGIT | '-' | '_')*;
-
-string: '"' value=STRING_CONTENT '"';
-
+tokenList: tokenGroup*;
