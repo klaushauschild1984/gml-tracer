@@ -20,48 +20,26 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml;
+package de.hauschild.gmltracer.gml.token.base.eval;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.Maps;
 
 import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.base.NumberToken;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class GMLInterpreter {
+public class SubEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GMLInterpreter.class);
-
-  private final Stopwatch stopwatch = Stopwatch.createUnstarted();
-  private final GMLExtractor gmlExtractor;
-
-  public GMLInterpreter(final GMLExtractor theGmlExtractor) {
-    gmlExtractor = theGmlExtractor;
+  @Override
+  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+      final Map<String, Token> environment) {
+    final double result = firstToken.getValue() - secondToken.getValue();
+    tokenStack.push(new NumberToken(result));
   }
 
-  public Stack<Token> interpret() {
-    final List<Token> tokens = gmlExtractor.extract();
-    final Stack<Token> tokenStack = new Stack<>();
-    final Map<String, Token> environment = Maps.newHashMap();
-    LOGGER.info("begin interpretation...");
-    stopwatch.start();
-    for (final Token token : tokens) {
-      token.evaluate(tokenStack, environment);
-    }
-    stopwatch.stop();
-    LOGGER.info("interpretation took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-    return tokenStack;
-  }
 }

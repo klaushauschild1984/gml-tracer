@@ -26,6 +26,12 @@ import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.base.eval.ApplyEvaluate;
+import de.hauschild.gmltracer.gml.token.base.eval.Evaluate;
+import de.hauschild.gmltracer.gml.token.base.eval.IfEvaluate;
+import de.hauschild.gmltracer.gml.token.base.eval.LessEvaluate;
+import de.hauschild.gmltracer.gml.token.base.eval.MulEvaluate;
+import de.hauschild.gmltracer.gml.token.base.eval.SubEvaluate;
 
 /**
  * @since 1.0
@@ -34,113 +40,76 @@ import de.hauschild.gmltracer.gml.token.Token;
  */
 public class OperatorToken implements Token {
 
-  private abstract static class AbstractDoubleEvaluate<FIRST extends Token, SECOND extends Token> implements Evaluate {
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-      final SECOND secondToken = (SECOND) tokenStack.pop();
-      final FIRST firstToken = (FIRST) tokenStack.pop();
-      evaluate(firstToken, secondToken, tokenStack, environment);
-    }
-
-    protected abstract void evaluate(FIRST firstToken, SECOND secondToken, Stack<Token> tokenStack, Map<String, Token> environment);
-
-  }
-
-  private abstract static class AbstractSingleEvaluate<T extends Token> implements Evaluate {
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-      final T token = (T) tokenStack.pop();
-      evaluate(token, tokenStack, environment);
-    }
-
-    protected abstract void evaluate(T token, Stack<Token> tokenStack, Map<String, Token> environment);
-
-  }
-
-  private interface Evaluate {
-
-    void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
-
-  }
-
   private static enum Type {
 
     // control operators
 
-    APPLY(new AbstractSingleEvaluate<FunctionToken>() {
+    IF(new IfEvaluate()), //
+    APPLY(new ApplyEvaluate()),
 
-      @Override
-      protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
-        final Map<String, Token> functionEnvironment = functionToken.getEnvironment();
-        for (final Token token : functionToken.getValue()) {
-          token.evaluate(tokenStack, functionEnvironment);
-        }
-      }
+    // number operators
+    ADDI(null), //
+    ADDF(null), //
+    ACOS(null), //
+    ASIN(null), //
+    CLAMPF(null), //
+    COS(null), //
+    DIVI(null), //
+    DIVF(null), //
+    EQI(null), //
+    EQF(null), //
+    FLOOR(null), //
+    FRAC(null), //
+    LESSI(new LessEvaluate()), //
+    LESSF(new LessEvaluate()), //
+    MODI(null), //
+    MULI(new MulEvaluate()), //
+    MULF(new MulEvaluate()), //
+    NEGI(null), //
+    NEGF(null), //
+    REAL(null), //
+    SIN(null), //
+    SQRT(null), //
+    SUBI(new SubEvaluate()), //
+    SUBF(new SubEvaluate()),
 
-    }),
+    // point operators
+    GETX(null), //
+    GETY(null), //
+    GETZ(null), //
+    POINT(null),
 
-    IF(new Evaluate() {
+    // array operators
+    GET(null), //
+    LENGTH(null),
 
-      @Override
-      public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-        final FunctionToken elseFunction = (FunctionToken) tokenStack.pop();
-        final FunctionToken ifFunction = (FunctionToken) tokenStack.pop();
-        final BooleanToken condition = (BooleanToken) tokenStack.pop();
-        if (condition.getValue()) {
-          ifFunction.evaluate(tokenStack, environment);
-        } else {
-          elseFunction.evaluate(tokenStack, environment);
-        }
-        APPLY.evaluate(tokenStack, environment);
-      }
+    // geometric primitive operators
+    SPHERE(null), //
+    CUBE(null), //
+    CYLINDER(null), //
+    CONE(null), //
+    PLANE(null),
 
-    }),
+    // transformation operators
+    TRANSLATE(null), //
+    SCALE(null), //
+    USCALE(null), //
+    ROTATEX(null), //
+    ROTATEY(null), //
+    ROTATEZ(null),
 
-    // numbers
+    // light operators
+    LIGHT(null), //
+    POINTLIGHT(null), //
+    SPOTLIGHT(null),
 
-    LESSI(new AbstractDoubleEvaluate<NumberToken, NumberToken>() {
+    // constructive solid geometry operators
+    UNION(null), //
+    INTERSECT(null), //
+    DIFFERENCE(null),
 
-      @Override
-      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-          final Map<String, Token> environment) {
-        if (firstToken.getValue() < secondToken.getValue()) {
-          tokenStack.push(BooleanToken.TRUE);
-        } else {
-          tokenStack.push(BooleanToken.FALSE);
-        }
-      }
-
-    }),
-
-    SUBI(new AbstractDoubleEvaluate<NumberToken, NumberToken>() {
-
-      @Override
-      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-          final Map<String, Token> environment) {
-        final double result = firstToken.getValue() - secondToken.getValue();
-        tokenStack.push(new NumberToken(result));
-      }
-
-    }),
-
-    MULI(new AbstractDoubleEvaluate<NumberToken, NumberToken>() {
-
-      @Override
-      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-          final Map<String, Token> environment) {
-        final double result = firstToken.getValue() * secondToken.getValue();
-        tokenStack.push(new NumberToken(result));
-      }
-
-    }),
-
-    // points
-
-    // arrays
+    // rendering operator
+    RENDER(null),
 
     ;
 

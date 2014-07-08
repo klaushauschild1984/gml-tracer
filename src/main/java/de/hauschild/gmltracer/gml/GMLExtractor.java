@@ -23,7 +23,14 @@
 package de.hauschild.gmltracer.gml;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
+
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 
 import de.hauschild.gmltracer.gml.GMLParser.ArrayContext;
@@ -34,6 +41,7 @@ import de.hauschild.gmltracer.gml.GMLParser.IdentifierContext;
 import de.hauschild.gmltracer.gml.GMLParser.NumberContext;
 import de.hauschild.gmltracer.gml.GMLParser.OperatorContext;
 import de.hauschild.gmltracer.gml.GMLParser.StringContext;
+import de.hauschild.gmltracer.gml.GMLParser.TokenListContext;
 import de.hauschild.gmltracer.gml.token.Token;
 import de.hauschild.gmltracer.gml.token.base.ArrayToken;
 import de.hauschild.gmltracer.gml.token.base.BinderToken;
@@ -51,6 +59,9 @@ import de.hauschild.gmltracer.gml.token.base.StringToken;
  */
 public class GMLExtractor {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(GMLExtractor.class);
+
+  private final Stopwatch stopwatch = Stopwatch.createUnstarted();
   private final GMLParser gmlParser;
 
   public GMLExtractor(final GMLParser theGmlParser) {
@@ -58,7 +69,16 @@ public class GMLExtractor {
   }
 
   public List<Token> extract() {
-    return new GMLBaseVisitor<List<Token>>() {
+    LOGGER.info("begin parsing...");
+    SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
+    stopwatch.start();
+    final TokenListContext tokenList = gmlParser.tokenList();
+    stopwatch.stop();
+    LOGGER.info("parsing took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    LOGGER.info("begin extraction...");
+    stopwatch.reset();
+    stopwatch.start();
+    final List<Token> extractedTokens = new GMLBaseVisitor<List<Token>>() {
 
       @Override
       public List<Token> visitArray(final ArrayContext ctx) {
@@ -137,6 +157,9 @@ public class GMLExtractor {
         return Lists.newArrayList();
       };
 
-    }.visit(gmlParser.tokenList());
+    }.visit(tokenList);
+    stopwatch.stop();
+    LOGGER.info("extraction took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    return extractedTokens;
   }
 }

@@ -20,48 +20,15 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml;
+package de.hauschild.gmltracer.gml.token.base.eval;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Stopwatch;
-import com.google.common.collect.Maps;
 
 import de.hauschild.gmltracer.gml.token.Token;
 
-/**
- * @since 1.0
- * 
- * @author Klaus Hauschild
- */
-public class GMLInterpreter {
+public interface Evaluate {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GMLInterpreter.class);
+  void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
 
-  private final Stopwatch stopwatch = Stopwatch.createUnstarted();
-  private final GMLExtractor gmlExtractor;
-
-  public GMLInterpreter(final GMLExtractor theGmlExtractor) {
-    gmlExtractor = theGmlExtractor;
-  }
-
-  public Stack<Token> interpret() {
-    final List<Token> tokens = gmlExtractor.extract();
-    final Stack<Token> tokenStack = new Stack<>();
-    final Map<String, Token> environment = Maps.newHashMap();
-    LOGGER.info("begin interpretation...");
-    stopwatch.start();
-    for (final Token token : tokens) {
-      token.evaluate(tokenStack, environment);
-    }
-    stopwatch.stop();
-    LOGGER.info("interpretation took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-    return tokenStack;
-  }
 }
