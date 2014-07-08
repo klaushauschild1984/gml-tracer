@@ -34,7 +34,7 @@ import de.hauschild.gmltracer.gml.token.Token;
  */
 public class OperatorToken implements Token {
 
-  private static abstract class DoubleEvaluate<FIRST extends Token, SECOND extends Token> implements Evaluate {
+  private abstract static class AbstractDoubleEvaluate<FIRST extends Token, SECOND extends Token> implements Evaluate {
 
     @Override
     @SuppressWarnings("unchecked")
@@ -44,18 +44,11 @@ public class OperatorToken implements Token {
       evaluate(firstToken, secondToken, tokenStack, environment);
     }
 
-    protected abstract void evaluate(FIRST firstToken, SECOND secondToken, Stack<Token> tokenStack,
-        Map<String, Token> environment);
+    protected abstract void evaluate(FIRST firstToken, SECOND secondToken, Stack<Token> tokenStack, Map<String, Token> environment);
 
   }
 
-  private static interface Evaluate {
-
-    void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
-
-  }
-
-  private static abstract class SingleEvaluate<T extends Token> implements Evaluate {
+  private abstract static class AbstractSingleEvaluate<T extends Token> implements Evaluate {
 
     @Override
     @SuppressWarnings("unchecked")
@@ -68,15 +61,20 @@ public class OperatorToken implements Token {
 
   }
 
+  private interface Evaluate {
+
+    void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
+
+  }
+
   private static enum Type {
 
     // control operators
 
-    APPLY(new SingleEvaluate<FunctionToken>() {
+    APPLY(new AbstractSingleEvaluate<FunctionToken>() {
 
       @Override
-      protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack,
-          final Map<String, Token> environment) {
+      protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
         final Map<String, Token> functionEnvironment = functionToken.getEnvironment();
         for (final Token token : functionToken.getValue()) {
           token.evaluate(tokenStack, functionEnvironment);
@@ -104,11 +102,11 @@ public class OperatorToken implements Token {
 
     // numbers
 
-    LESSI(new DoubleEvaluate<NumberToken, NumberToken>() {
+    LESSI(new AbstractDoubleEvaluate<NumberToken, NumberToken>() {
 
       @Override
-      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken,
-          final Stack<Token> tokenStack, final Map<String, Token> environment) {
+      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+          final Map<String, Token> environment) {
         if (firstToken.getValue() < secondToken.getValue()) {
           tokenStack.push(BooleanToken.TRUE);
         } else {
@@ -118,22 +116,22 @@ public class OperatorToken implements Token {
 
     }),
 
-    SUBI(new DoubleEvaluate<NumberToken, NumberToken>() {
+    SUBI(new AbstractDoubleEvaluate<NumberToken, NumberToken>() {
 
       @Override
-      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken,
-          final Stack<Token> tokenStack, final Map<String, Token> environment) {
+      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+          final Map<String, Token> environment) {
         final double result = firstToken.getValue() - secondToken.getValue();
         tokenStack.push(new NumberToken(result));
       }
 
     }),
 
-    MULI(new DoubleEvaluate<NumberToken, NumberToken>() {
+    MULI(new AbstractDoubleEvaluate<NumberToken, NumberToken>() {
 
       @Override
-      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken,
-          final Stack<Token> tokenStack, final Map<String, Token> environment) {
+      protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+          final Map<String, Token> environment) {
         final double result = firstToken.getValue() * secondToken.getValue();
         tokenStack.push(new NumberToken(result));
       }

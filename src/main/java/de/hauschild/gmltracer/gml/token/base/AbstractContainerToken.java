@@ -33,6 +33,8 @@ import de.hauschild.gmltracer.gml.token.Token;
  */
 public abstract class AbstractContainerToken extends AbstractValueToken<List<Token>> {
 
+  private static final String SPACE = " ";
+
   protected AbstractContainerToken(final List<Token> tokens) {
     super(tokens);
   }
@@ -41,12 +43,12 @@ public abstract class AbstractContainerToken extends AbstractValueToken<List<Tok
   public String toString() {
     final StringBuilder builder = new StringBuilder();
     builder.append(toStringBegin());
-    builder.append(" ");
+    builder.append(SPACE);
     for (final Token token : getValue()) {
       builder.append(token);
       builder.append(toStringSeparator());
     }
-    builder.append(" ");
+    builder.append(SPACE);
     builder.append(toStringEnd());
     return builder.toString();
   }

@@ -110,9 +110,6 @@
       <property name="checkHtml" value="false"/>
     </module>
   </module>
-  <module name="RegexpHeader">
-    <property name="header" value="^/\*$\n^ \* Copyright \(c\) \d{4} Siemens A&amp;D CD\. All rights reserved\.$\n^ \* This software is the confidential and proprietary information of Siemens A&amp;D CD\.$\n^ \* This file is part of .{3,}$\n^ \*/$"/>
-  </module>
   <module name="SuppressionCommentFilter">
     <property name="offCommentFormat" value="CHECKSTYLE\s+ILLEGALCATCH\s+OFF"/>
     <property name="onCommentFormat" value="CHECKSTYLE\s+ILLEGALCATCH\s+ON"/>
