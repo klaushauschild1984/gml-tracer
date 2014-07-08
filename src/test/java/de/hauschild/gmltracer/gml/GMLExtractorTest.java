@@ -30,6 +30,8 @@ import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -43,6 +45,8 @@ import de.hauschild.gmltracer.gml.token.Token;
  */
 public class GMLExtractorTest {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(GMLExtractorTest.class);
+
   @DataProvider
   public Object[][] dataProvider() {
     return new Object[][]{
@@ -50,10 +54,17 @@ public class GMLExtractorTest {
             "fact.gml",
             6,
         },
-
         {
             "test.gml",
             9,
+        },
+        {
+            "three-spheres.gml",
+            63,
+        },
+        {
+            "checked-cube.gml",
+            14,
         },
 
     };
@@ -74,7 +85,7 @@ public class GMLExtractorTest {
     });
     final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
     final List<Token> tokens = gmlExtractor.extract();
-    System.out.println(tokens);
+    LOGGER.info(tokens.toString());
     Assert.assertEquals(tokens.size(), expectedTokenCount);
   }
 }
