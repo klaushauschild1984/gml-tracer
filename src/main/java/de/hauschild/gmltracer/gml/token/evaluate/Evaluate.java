@@ -20,26 +20,15 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base.eval;
+package de.hauschild.gmltracer.gml.token.evaluate;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.NumberToken;
 
-/**
- * @since 1.0
- * 
- * @author Klaus Hauschild
- */
-public class SubEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
+public interface Evaluate {
 
-  @Override
-  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    final double result = firstToken.getValue() - secondToken.getValue();
-    tokenStack.push(new NumberToken(result));
-  }
+  void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

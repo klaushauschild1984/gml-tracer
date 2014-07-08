@@ -20,20 +20,28 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base;
+package de.hauschild.gmltracer.gml.token.evaluate.control;
+
+import java.util.Map;
+import java.util.Stack;
+
+import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.evaluate.AbstractSingleEvaluate;
+import de.hauschild.gmltracer.gml.token.impl.FunctionToken;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class BooleanToken extends AbstractValueToken<Boolean> {
+public class ApplyEvaluate extends AbstractSingleEvaluate<FunctionToken> {
 
-  public static final BooleanToken TRUE = new BooleanToken(Boolean.TRUE.toString());
-  public static final BooleanToken FALSE = new BooleanToken(Boolean.FALSE.toString());
-
-  public BooleanToken(final String bool) {
-    super(Boolean.parseBoolean(bool));
+  @Override
+  protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final Map<String, Token> functionEnvironment = functionToken.getEnvironment();
+    for (final Token token : functionToken.getValue()) {
+      token.evaluate(tokenStack, functionEnvironment);
+    }
   }
 
 }

@@ -20,27 +20,22 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base.eval;
+package de.hauschild.gmltracer.gml.token.evaluate;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.FunctionToken;
 
-/**
- * @since 1.0
- * 
- * @author Klaus Hauschild
- */
-public class ApplyEvaluate extends AbstractSingleEvaluate<FunctionToken> {
+public abstract class AbstractSingleEvaluate<T extends Token> implements Evaluate {
 
   @Override
-  protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final Map<String, Token> functionEnvironment = functionToken.getEnvironment();
-    for (final Token token : functionToken.getValue()) {
-      token.evaluate(tokenStack, functionEnvironment);
-    }
+  @SuppressWarnings("unchecked")
+  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final T token = (T) tokenStack.pop();
+    evaluate(token, tokenStack, environment);
   }
+
+  protected abstract void evaluate(T token, Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

@@ -20,18 +20,18 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base;
+package de.hauschild.gmltracer.gml.token.impl;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.eval.ApplyEvaluate;
-import de.hauschild.gmltracer.gml.token.base.eval.Evaluate;
-import de.hauschild.gmltracer.gml.token.base.eval.IfEvaluate;
-import de.hauschild.gmltracer.gml.token.base.eval.LessEvaluate;
-import de.hauschild.gmltracer.gml.token.base.eval.MulEvaluate;
-import de.hauschild.gmltracer.gml.token.base.eval.SubEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.control.ApplyEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.control.IfEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.number.LessEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.number.MulEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.number.SubEvaluate;
 
 /**
  * @since 1.0

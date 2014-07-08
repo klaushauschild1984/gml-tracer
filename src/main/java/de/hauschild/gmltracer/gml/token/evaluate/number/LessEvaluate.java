@@ -20,52 +20,31 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base;
+package de.hauschild.gmltracer.gml.token.evaluate.number;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import com.google.common.collect.Maps;
-
 import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
+import de.hauschild.gmltracer.gml.token.impl.BooleanToken;
+import de.hauschild.gmltracer.gml.token.impl.NumberToken;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class FunctionToken extends AbstractContainerToken {
-
-  private Map<String, Token> environment;
-
-  public FunctionToken(final List<Token> theTokens) {
-    super(theTokens);
-  }
+public class LessEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
 
   @Override
-  public void evaluate(final Stack<Token> theTokenStack, final Map<String, Token> theEnvironment) {
-    super.evaluate(theTokenStack, theEnvironment);
-    environment = Maps.newHashMap(theEnvironment);
-  }
-
-  public Map<String, Token> getEnvironment() {
-    return environment;
-  }
-
-  @Override
-  protected String toStringBegin() {
-    return "{";
-  }
-
-  @Override
-  protected String toStringEnd() {
-    return "}";
-  }
-
-  @Override
-  protected String toStringSeparator() {
-    return " ";
+  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+      final Map<String, Token> environment) {
+    if (firstToken.getValue() < secondToken.getValue()) {
+      tokenStack.push(BooleanToken.TRUE);
+    } else {
+      tokenStack.push(BooleanToken.FALSE);
+    }
   }
 
 }

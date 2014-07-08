@@ -20,23 +20,27 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base.eval;
+package de.hauschild.gmltracer.gml.token.evaluate.number;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
+import de.hauschild.gmltracer.gml.token.impl.NumberToken;
 
-public abstract class AbstractDoubleEvaluate<FIRST extends Token, SECOND extends Token> implements Evaluate {
+/**
+ * @since 1.0
+ * 
+ * @author Klaus Hauschild
+ */
+public class SubEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
 
   @Override
-  @SuppressWarnings("unchecked")
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final SECOND secondToken = (SECOND) tokenStack.pop();
-    final FIRST firstToken = (FIRST) tokenStack.pop();
-    evaluate(firstToken, secondToken, tokenStack, environment);
+  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+      final Map<String, Token> environment) {
+    final double result = firstToken.getValue() - secondToken.getValue();
+    tokenStack.push(new NumberToken(result));
   }
-
-  protected abstract void evaluate(FIRST firstToken, SECOND secondToken, Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

@@ -20,15 +20,28 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base.eval;
+package de.hauschild.gmltracer.gml.token.impl;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
 
-public interface Evaluate {
+/**
+ * @since 1.0
+ * 
+ * @author Klaus Hauschild
+ */
+public class IdentifierToken extends AbstractValueToken<String> {
 
-  void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
+  public IdentifierToken(final String identifier) {
+    super(identifier);
+  }
+
+  @Override
+  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final Token token = environment.get(getValue());
+    tokenStack.push(token);
+  }
 
 }

@@ -20,7 +20,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base;
+package de.hauschild.gmltracer.gml.token.impl;
 
 import java.util.Map;
 import java.util.Stack;
@@ -32,26 +32,21 @@ import de.hauschild.gmltracer.gml.token.Token;
  * 
  * @author Klaus Hauschild
  */
-public abstract class AbstractValueToken<T> implements Token {
+public class BinderToken extends AbstractValueToken<String> {
 
-  private final T value;
-
-  protected AbstractValueToken(final T theValue) {
-    value = theValue;
+  public BinderToken(final String binder) {
+    super(binder);
   }
 
   @Override
   public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    tokenStack.push(this);
-  }
-
-  public T getValue() {
-    return value;
+    final Token token = tokenStack.pop();
+    environment.put(getValue(), token);
   }
 
   @Override
   public String toString() {
-    return value.toString();
+    return String.format("/%s", getValue());
   }
 
 }

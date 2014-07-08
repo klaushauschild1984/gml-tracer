@@ -20,43 +20,23 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base;
+package de.hauschild.gmltracer.gml.token.evaluate;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
 
-/**
- * @since 1.0
- * 
- * @author Klaus Hauschild
- */
-public abstract class AbstractContainerToken extends AbstractValueToken<List<Token>> {
-
-  private static final String SPACE = " ";
-
-  protected AbstractContainerToken(final List<Token> tokens) {
-    super(tokens);
-  }
+public abstract class AbstractDoubleEvaluate<FIRST extends Token, SECOND extends Token> implements Evaluate {
 
   @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append(toStringBegin());
-    builder.append(SPACE);
-    for (final Token token : getValue()) {
-      builder.append(token);
-      builder.append(toStringSeparator());
-    }
-    builder.append(SPACE);
-    builder.append(toStringEnd());
-    return builder.toString();
+  @SuppressWarnings("unchecked")
+  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final SECOND secondToken = (SECOND) tokenStack.pop();
+    final FIRST firstToken = (FIRST) tokenStack.pop();
+    evaluate(firstToken, secondToken, tokenStack, environment);
   }
 
-  protected abstract String toStringBegin();
-
-  protected abstract String toStringEnd();
-
-  protected abstract String toStringSeparator();
+  protected abstract void evaluate(FIRST firstToken, SECOND secondToken, Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

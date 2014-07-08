@@ -34,7 +34,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.NumberToken;
+import de.hauschild.gmltracer.gml.token.impl.NumberToken;
 
 /**
  * @since 1.0

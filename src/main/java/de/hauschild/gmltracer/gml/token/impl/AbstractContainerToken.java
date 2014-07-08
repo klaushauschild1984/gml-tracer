@@ -20,33 +20,43 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.base.eval;
+package de.hauschild.gmltracer.gml.token.impl;
 
-import java.util.Map;
-import java.util.Stack;
+import java.util.List;
 
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.BooleanToken;
-import de.hauschild.gmltracer.gml.token.base.FunctionToken;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class IfEvaluate implements Evaluate {
+public abstract class AbstractContainerToken extends AbstractValueToken<List<Token>> {
+
+  private static final String SPACE = " ";
+
+  protected AbstractContainerToken(final List<Token> tokens) {
+    super(tokens);
+  }
 
   @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final FunctionToken elseFunction = (FunctionToken) tokenStack.pop();
-    final FunctionToken ifFunction = (FunctionToken) tokenStack.pop();
-    final BooleanToken condition = (BooleanToken) tokenStack.pop();
-    if (condition.getValue()) {
-      ifFunction.evaluate(tokenStack, environment);
-    } else {
-      elseFunction.evaluate(tokenStack, environment);
+  public String toString() {
+    final StringBuilder builder = new StringBuilder();
+    builder.append(toStringBegin());
+    builder.append(SPACE);
+    for (final Token token : getValue()) {
+      builder.append(token);
+      builder.append(toStringSeparator());
     }
-    new ApplyEvaluate().evaluate(tokenStack, environment);
+    builder.append(SPACE);
+    builder.append(toStringEnd());
+    return builder.toString();
   }
+
+  protected abstract String toStringBegin();
+
+  protected abstract String toStringEnd();
+
+  protected abstract String toStringSeparator();
 
 }
