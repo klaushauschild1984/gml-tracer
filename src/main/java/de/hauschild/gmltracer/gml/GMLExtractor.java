@@ -23,7 +23,6 @@
 package de.hauschild.gmltracer.gml;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,7 +74,7 @@ public class GMLExtractor {
     stopwatch.start();
     final TokenListContext tokenList = gmlParser.tokenList();
     stopwatch.stop();
-    PARSER_LOGGER.info("parsing took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    PARSER_LOGGER.info("parsing took {}", stopwatch);
     EXTRACTOR_LOGGER.info("begin extraction...");
     stopwatch.reset();
     stopwatch.start();
@@ -160,7 +159,7 @@ public class GMLExtractor {
 
     }.visit(tokenList);
     stopwatch.stop();
-    EXTRACTOR_LOGGER.info("extraction took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    EXTRACTOR_LOGGER.info("extraction took {}", stopwatch);
     return extractedTokens;
   }
 }
