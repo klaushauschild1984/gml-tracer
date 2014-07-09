@@ -20,62 +20,31 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.tracer.shape.tier1;
+package de.hauschild.gmltracer.tracer.impl;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
-import de.hauschild.gmltracer.tracer.impl.Intersection;
-import de.hauschild.gmltracer.tracer.impl.Ray;
-import de.hauschild.gmltracer.tracer.shape.AbstractShape;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class Sphere extends AbstractShape {
+public class Ray {
 
-  @Override
-  public Intersection intersect(final Ray ray) {
-    final Vector3D position = worldToObject(ray.getBegin());
-    final Vector3D direction = worldToObject(ray.getEnd()).subtract(position).normalize();
-    final double a = 1;
-    final double b = 2.0 * Vector3D.dotProduct(direction, position);
-    final double c = Vector3D.dotProduct(position, position) - 1;
-    final double d = b * b - 4 * a * c;
-    if (d < 0.0) {
-      return null;
-    }
-    final double sqrtD = Math.sqrt(d);
-    double q;
-    if (b < 0) {
-      q = (-b - sqrtD) / 2.0;
-    } else {
-      q = (-b + sqrtD) / 2.0;
-    }
-    double t0 = q / a;
-    double t1 = c / q;
-    if (t0 > t1) {
-      final double temp = t0;
-      t0 = t1;
-      t1 = temp;
-    }
-    if (t1 < 0) {
-      return null;
-    }
-    double t;
-    if (t0 < 0) {
-      t = t1;
-    } else {
-      t = t0;
-    }
-    final Vector3D hitPoint = direction.scalarMultiply(t).add(position);
-    return new Intersection(objectToWorld(hitPoint), this, hitPoint);
+  private final Vector3D begin;
+  private final Vector3D end;
+
+  public Ray(final Vector3D theBegin, final Vector3D theEnd) {
+    begin = theBegin;
+    end = theEnd;
   }
 
-  @Override
-  public String toString() {
-    return String.format("{Sphere}");
+  public Vector3D getEnd() {
+    return end;
+  }
+
+  public Vector3D getBegin() {
+    return begin;
   }
 
 }

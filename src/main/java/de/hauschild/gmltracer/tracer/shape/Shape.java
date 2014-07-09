@@ -22,12 +22,17 @@
  */
 package de.hauschild.gmltracer.tracer.shape;
 
+import de.hauschild.gmltracer.tracer.impl.Intersection;
+import de.hauschild.gmltracer.tracer.impl.Ray;
+
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
 public interface Shape {
+
+  Intersection intersect(Ray ray);
 
   void translate(double x, double y, double z);
 

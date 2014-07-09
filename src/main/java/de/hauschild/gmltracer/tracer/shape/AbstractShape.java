@@ -22,6 +22,10 @@
  */
 package de.hauschild.gmltracer.tracer.shape;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.RealMatrix;
+
 /**
  * @since 1.0
  * 
@@ -29,9 +33,41 @@ package de.hauschild.gmltracer.tracer.shape;
  */
 public abstract class AbstractShape implements Shape {
 
+  private RealMatrix transformation = MatrixUtils.createRealIdentityMatrix(4);
+
   @Override
   public void translate(final double x, final double y, final double z) {
-    // TODO Auto-generated method stub
+    final RealMatrix translation = MatrixUtils.createRealMatrix(new double[][] {
+        {
+            1, 0, 0, x,
+        }, {
+            0, 1, 0, y,
+        }, {
+            0, 0, 1, z,
+        }, {
+            0, 0, 0, 1,
+        },
+    });
+    transformBy(translation);
+  }
+
+  protected Vector3D objectToWorld(final Vector3D point) {
+    return transform(transformation, point);
+  }
+
+  protected Vector3D worldToObject(final Vector3D point) {
+    return transform(MatrixUtils.inverse(transformation), point);
+  }
+
+  private Vector3D transform(final RealMatrix matrix, final Vector3D point) {
+    final double[] operated = matrix.operate(new double[] {
+        point.getX(), point.getY(), point.getZ(), 1.0,
+    });
+    return new Vector3D(operated[0], operated[1], operated[2]);
+  }
+
+  private void transformBy(final RealMatrix matrix) {
+    transformation = transformation.multiply(matrix);
   }
 
 }

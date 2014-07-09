@@ -22,6 +22,8 @@
  */
 package de.hauschild.gmltracer.tracer.shape.tier1;
 
+import de.hauschild.gmltracer.tracer.impl.Intersection;
+import de.hauschild.gmltracer.tracer.impl.Ray;
 import de.hauschild.gmltracer.tracer.shape.AbstractShape;
 import de.hauschild.gmltracer.tracer.shape.Shape;
 
@@ -38,6 +40,31 @@ public class Union extends AbstractShape {
   public Union(final Shape theFirst, final Shape theSecond) {
     first = theFirst;
     second = theSecond;
+  }
+
+  @Override
+  public Intersection intersect(final Ray ray) {
+    final Intersection firstIntersection = first.intersect(ray);
+    final Intersection secondIntersection = second.intersect(ray);
+    if (firstIntersection == null && secondIntersection == null) {
+      return null;
+    }
+    if (firstIntersection != null && secondIntersection == null) {
+      return firstIntersection;
+    }
+    if (firstIntersection == null && secondIntersection != null) {
+      return secondIntersection;
+    }
+    final double firstSquareLength = firstIntersection.getPoint().getX() * firstIntersection.getPoint().getX()
+        + firstIntersection.getPoint().getY() * firstIntersection.getPoint().getY() + firstIntersection.getPoint().getZ()
+        * firstIntersection.getPoint().getZ();
+    final double secondSquareLength = secondIntersection.getPoint().getX() * secondIntersection.getPoint().getX()
+        + secondIntersection.getPoint().getY() * secondIntersection.getPoint().getY() + secondIntersection.getPoint().getZ()
+        * secondIntersection.getPoint().getZ();
+    if (firstSquareLength < secondSquareLength) {
+      return firstIntersection;
+    }
+    return secondIntersection;
   }
 
   @Override
