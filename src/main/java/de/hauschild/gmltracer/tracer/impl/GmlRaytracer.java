@@ -22,12 +22,15 @@
  */
 package de.hauschild.gmltracer.tracer.impl;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -35,6 +38,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.slf4j.Logger;
@@ -55,7 +60,7 @@ public class GmlRaytracer implements Raytracer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(GmlRaytracer.class);
 
-  private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+  private final ExecutorService executorService = Executors.newFixedThreadPool(20);
 
   @Override
   public void render(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
@@ -70,7 +75,43 @@ public class GmlRaytracer implements Raytracer {
     LOGGER.info("                  width: {}", width);
     LOGGER.info("                 height: {}", height);
     LOGGER.info("               fileName: {}", fileName);
-    final Iterator<Point> pointIterator = new StraightForwardPointIterator(width, height);
+    final JFrame preview = new JFrame() {
+
+      {
+        setTitle(fileName);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addKeyListener(new KeyAdapter() {
+
+          @Override
+          public void keyPressed(final KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+              dispose();
+              System.exit(0);
+            }
+          }
+
+        });
+        setResizable(false);
+        setLayout(new BorderLayout());
+        add(new JPanel() {
+
+          {
+            setPreferredSize(new Dimension(width, height));
+          }
+
+          @Override
+          public void paint(final Graphics graphics) {
+            graphics.drawImage(image, 0, 0, null);
+          }
+
+        });
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+      }
+
+    };
+    final Iterator<Point> pointIterator = new RandomPointIterator(width, height);
     final Stopwatch stopwatch = Stopwatch.createStarted();
     while (pointIterator.hasNext()) {
       final Point point = pointIterator.next();
@@ -83,6 +124,7 @@ public class GmlRaytracer implements Raytracer {
             final Graphics graphics = image.getGraphics();
             graphics.setColor(color);
             graphics.drawLine(point.x, point.y, point.x, point.y);
+            preview.repaint();
           }
         }
 
@@ -100,7 +142,8 @@ public class GmlRaytracer implements Raytracer {
     try {
       file.createNewFile();
       ImageIO.write(image, "PNG", file);
-    } catch (final IOException exception) {
+      Thread.sleep(3 * 1000);
+    } catch (final Exception exception) {
       throw new RuntimeException(exception);
     }
   }
