@@ -30,4 +30,10 @@ import de.hauschild.gmltracer.tracer.shape.AbstractShape;
  * @author Klaus Hauschild
  */
 public class Sphere extends AbstractShape {
+
+  @Override
+  public String toString() {
+    return String.format("{Sphere}");
+  };
+
 }

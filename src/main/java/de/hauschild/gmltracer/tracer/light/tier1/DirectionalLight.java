@@ -41,4 +41,9 @@ public class DirectionalLight extends AbstractLight {
     color = theColor;
   }
 
+  @Override
+  public String toString() {
+    return String.format("{Light, direction: %s; color: %s}", direction, color);
+  }
+
 }

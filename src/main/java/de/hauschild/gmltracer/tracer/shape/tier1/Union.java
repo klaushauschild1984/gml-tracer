@@ -40,4 +40,9 @@ public class Union extends AbstractShape {
     second = theSecond;
   }
 
+  @Override
+  public String toString() {
+    return String.format("{Union: %s, %s}", first, second);
+  }
+
 }
