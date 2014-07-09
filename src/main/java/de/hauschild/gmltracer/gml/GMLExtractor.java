@@ -59,7 +59,8 @@ import de.hauschild.gmltracer.gml.token.base.StringToken;
  */
 public class GMLExtractor {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GMLExtractor.class);
+  private static final Logger PARSER_LOGGER = LoggerFactory.getLogger(GMLParser.class);
+  private static final Logger EXTRACTOR_LOGGER = LoggerFactory.getLogger(GMLExtractor.class);
 
   private final Stopwatch stopwatch = Stopwatch.createUnstarted();
   private final GMLParser gmlParser;
@@ -69,13 +70,13 @@ public class GMLExtractor {
   }
 
   public List<Token> extract() {
-    LOGGER.info("begin parsing...");
+    PARSER_LOGGER.info("begin parsing...");
     SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
     stopwatch.start();
     final TokenListContext tokenList = gmlParser.tokenList();
     stopwatch.stop();
-    LOGGER.info("parsing took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-    LOGGER.info("begin extraction...");
+    PARSER_LOGGER.info("parsing took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    EXTRACTOR_LOGGER.info("begin extraction...");
     stopwatch.reset();
     stopwatch.start();
     final List<Token> extractedTokens = new GMLBaseVisitor<List<Token>>() {
@@ -159,7 +160,7 @@ public class GMLExtractor {
 
     }.visit(tokenList);
     stopwatch.stop();
-    LOGGER.info("extraction took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    EXTRACTOR_LOGGER.info("extraction took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
     return extractedTokens;
   }
 }
