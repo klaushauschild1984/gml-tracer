@@ -28,7 +28,6 @@ import java.util.Stack;
 
 import com.google.common.collect.Lists;
 
-import de.hauschild.gmltracer.GmlTracer;
 import de.hauschild.gmltracer.gml.token.Token;
 import de.hauschild.gmltracer.gml.token.base.ArrayToken;
 import de.hauschild.gmltracer.gml.token.base.NumberToken;
@@ -37,6 +36,7 @@ import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
 import de.hauschild.gmltracer.gml.token.geometry.PointToken;
 import de.hauschild.gmltracer.gml.token.geometry.ShapeToken;
 import de.hauschild.gmltracer.gml.token.light.LightToken;
+import de.hauschild.gmltracer.tracer.impl.GmlRaytracer;
 import de.hauschild.gmltracer.tracer.light.Light;
 
 /**
@@ -63,7 +63,7 @@ public class RenderEvaluate implements Evaluate {
       lights.add(((LightToken) light).getValue());
     }
     final PointToken ambientLightIntensity = (PointToken) tokenStack.pop();
-    GmlTracer.RAY_TRACER.render(ambientLightIntensity.getValue(), lights, scene.getValue(), depth.getValue().intValue(),
+    new GmlRaytracer().render(ambientLightIntensity.getValue(), lights, scene.getValue(), depth.getValue().intValue(),
         fieldOfView.getValue(), width.getValue().intValue(), height.getValue().intValue(), fileName.getValue());
   }
 

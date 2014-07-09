@@ -20,7 +20,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.tracer;
+package de.hauschild.gmltracer.tracer.impl;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
+import de.hauschild.gmltracer.tracer.Raytracer;
 import de.hauschild.gmltracer.tracer.light.Light;
 import de.hauschild.gmltracer.tracer.shape.Shape;
 
@@ -40,15 +41,23 @@ import de.hauschild.gmltracer.tracer.shape.Shape;
  * 
  * @author Klaus Hauschild
  */
-public abstract class AbstractRaytracer implements Raytracer {
+public class GmlRaytracer implements Raytracer {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRaytracer.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(GmlRaytracer.class);
 
   @Override
   public void render(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
       final double fieldOfView, final int width, final int height, final String fileName) {
     final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     LOGGER.info("begin raytracing...");
+    LOGGER.info("ambient light intensity: {}", ambientLightIntensity);
+    LOGGER.info("                 lights: {}", lights);
+    LOGGER.info("                  scene: {}", scene);
+    LOGGER.info("                  depth: {}", depth);
+    LOGGER.info("          field of view: {}", fieldOfView);
+    LOGGER.info("                  width: {}", width);
+    LOGGER.info("                 height: {}", height);
+    LOGGER.info("               fileName: {}", fileName);
     final Stopwatch stopwatch = Stopwatch.createStarted();
     // ...
     LOGGER.info("raytracing took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));

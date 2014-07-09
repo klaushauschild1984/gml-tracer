@@ -34,8 +34,6 @@ import de.hauschild.gmltracer.gml.GMLExtractor;
 import de.hauschild.gmltracer.gml.GMLInterpreter;
 import de.hauschild.gmltracer.gml.GMLLexer;
 import de.hauschild.gmltracer.gml.GMLParser;
-import de.hauschild.gmltracer.tracer.AbstractRaytracer;
-import de.hauschild.gmltracer.tracer.Raytracer;
 
 /**
  * @since 1.0
@@ -43,9 +41,6 @@ import de.hauschild.gmltracer.tracer.Raytracer;
  * @author Klaus Hauschild
  */
 public class GmlTracer {
-
-  public static final Raytracer RAY_TRACER = new AbstractRaytracer() {
-  };
 
   public static void main(final String[] args) throws Exception {
     final FileInputStream fileInputStream = new FileInputStream(args[0]);
