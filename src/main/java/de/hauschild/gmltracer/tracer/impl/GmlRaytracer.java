@@ -22,9 +22,19 @@
  */
 package de.hauschild.gmltracer.tracer.impl;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.slf4j.Logger;
@@ -45,6 +55,8 @@ public class GmlRaytracer implements Raytracer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(GmlRaytracer.class);
 
+  private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
   @Override
   public void render(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
       final double fieldOfView, final int width, final int height, final String fileName) {
@@ -58,9 +70,61 @@ public class GmlRaytracer implements Raytracer {
     LOGGER.info("                  width: {}", width);
     LOGGER.info("                 height: {}", height);
     LOGGER.info("               fileName: {}", fileName);
+    final Iterator<Point> pointIterator = new StraightForwardPointIterator(width, height);
     final Stopwatch stopwatch = Stopwatch.createStarted();
-    // ...
-    LOGGER.info("raytracing took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+    while (pointIterator.hasNext()) {
+      final Point point = pointIterator.next();
+      executorService.execute(new Runnable() {
+
+        @Override
+        public void run() {
+          final Color color = renderPoint(ambientLightIntensity, lights, scene, depth, fieldOfView, width, height, point);
+          synchronized (image) {
+            final Graphics graphics = image.getGraphics();
+            graphics.setColor(color);
+            graphics.drawLine(point.x, point.y, point.x, point.y);
+          }
+        }
+
+      });
+    }
+    executorService.shutdown();
+    try {
+      executorService.awaitTermination(1, TimeUnit.HOURS);
+    } catch (final InterruptedException exception) {
+      throw new RuntimeException(exception);
+    }
+    stopwatch.stop();
+    LOGGER.info("raytracing took {}", stopwatch);
+    final File file = new File(fileName);
+    try {
+      file.createNewFile();
+      ImageIO.write(image, "PNG", file);
+    } catch (final IOException exception) {
+      throw new RuntimeException(exception);
+    }
+  }
+
+  private Color renderPoint(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
+      final double fieldOfView, final int width, final int height, final Point point) {
+    final double worldWidth = 2.0 * Math.tan(Math.toRadians(0.5 * fieldOfView));
+    final double worldHeight = worldWidth * width / height;
+    final double pixelSizeX = worldWidth / width;
+    final double pixelSizeY = worldHeight / height;
+    final Ray ray = new Ray(new Vector3D(0.0, 0.0, -1.0), new Vector3D(-(worldWidth - 2 * (point.x + 0.5) * pixelSizeX), worldHeight - 2
+        * (point.y + 0.5) * pixelSizeY, 1.0));
+    return renderRay(ambientLightIntensity, lights, scene, depth, ray);
+  }
+
+  private Color renderRay(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth, final Ray ray) {
+    if (depth == 0) {
+      return Color.BLACK;
+    }
+    final Intersection intersection = scene.intersect(ray);
+    if (intersection == null) {
+      return Color.BLACK;
+    }
+    return Color.RED;
   }
 
 }
