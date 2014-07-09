@@ -20,48 +20,49 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml;
+package de.hauschild.gmltracer;
 
-import java.io.IOException;
-import java.util.Stack;
+import java.io.FileInputStream;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
-import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.NumberToken;
+import de.hauschild.gmltracer.gml.GMLExtractor;
+import de.hauschild.gmltracer.gml.GMLInterpreter;
+import de.hauschild.gmltracer.gml.GMLLexer;
+import de.hauschild.gmltracer.gml.GMLParser;
+import de.hauschild.gmltracer.tracer.AbstractRaytracer;
+import de.hauschild.gmltracer.tracer.Raytracer;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class GMLInterpreterTest {
+public class GmlTracer {
 
-  @Test
-  public void twelveFactorial() throws IOException {
-    final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(getClass().getResourceAsStream("fact.gml")));
+  public static final Raytracer RAY_TRACER = new AbstractRaytracer() {
+  };
+
+  public static void main(final String[] args) throws Exception {
+    final FileInputStream fileInputStream = new FileInputStream(args[0]);
+    final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(fileInputStream));
     final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
     gmlParser.addErrorListener(new BaseErrorListener() {
 
       @Override
-      public void syntaxError(final Recognizer<?, ?> theRecognizer, final Object theOffendingSymbol, final int theLine,
-          final int theCharPositionInLine, final String theMsg, final RecognitionException theE) {
-        Assert.fail(theMsg);
+      public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol, final int line,
+          final int charPositionInLine, final String message, final RecognitionException exception) {
+        throw new RuntimeException(message);
       }
 
     });
     final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
     final GMLInterpreter gmlInterpreter = new GMLInterpreter(gmlExtractor);
-    final Stack<Token> tokenStack = gmlInterpreter.interpret();
-    Assert.assertEquals(tokenStack.size(), 1);
-    final NumberToken result = (NumberToken) tokenStack.pop();
-    Assert.assertEquals(result.getValue(), 479001600d);
+    gmlInterpreter.interpret();
   }
 
 }

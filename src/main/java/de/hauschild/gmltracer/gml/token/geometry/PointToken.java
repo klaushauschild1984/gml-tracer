@@ -20,28 +20,21 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer.gml.token.geometry;
 
-import java.util.Map;
-import java.util.Stack;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.base.AbstractValueToken;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class IdentifierToken extends AbstractValueToken<String> {
+public class PointToken extends AbstractValueToken<Vector3D> {
 
-  public IdentifierToken(final String identifier) {
-    super(identifier);
-  }
-
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final Token token = environment.get(getValue());
-    tokenStack.push(token);
+  public PointToken(final double x, final double y, final double z) {
+    super(new Vector3D(x, y, z));
   }
 
 }

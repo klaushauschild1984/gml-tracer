@@ -43,14 +43,14 @@ import de.hauschild.gmltracer.gml.GMLParser.OperatorContext;
 import de.hauschild.gmltracer.gml.GMLParser.StringContext;
 import de.hauschild.gmltracer.gml.GMLParser.TokenListContext;
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.impl.ArrayToken;
-import de.hauschild.gmltracer.gml.token.impl.BinderToken;
-import de.hauschild.gmltracer.gml.token.impl.BooleanToken;
-import de.hauschild.gmltracer.gml.token.impl.FunctionToken;
-import de.hauschild.gmltracer.gml.token.impl.IdentifierToken;
-import de.hauschild.gmltracer.gml.token.impl.NumberToken;
-import de.hauschild.gmltracer.gml.token.impl.OperatorToken;
-import de.hauschild.gmltracer.gml.token.impl.StringToken;
+import de.hauschild.gmltracer.gml.token.base.ArrayToken;
+import de.hauschild.gmltracer.gml.token.base.BinderToken;
+import de.hauschild.gmltracer.gml.token.base.BooleanToken;
+import de.hauschild.gmltracer.gml.token.base.FunctionToken;
+import de.hauschild.gmltracer.gml.token.base.IdentifierToken;
+import de.hauschild.gmltracer.gml.token.base.NumberToken;
+import de.hauschild.gmltracer.gml.token.base.OperatorToken;
+import de.hauschild.gmltracer.gml.token.base.StringToken;
 
 /**
  * @since 1.0

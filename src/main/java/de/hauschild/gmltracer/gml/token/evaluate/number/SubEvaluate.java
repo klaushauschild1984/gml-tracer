@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.base.NumberToken;
 import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
-import de.hauschild.gmltracer.gml.token.impl.NumberToken;
 
 /**
  * @since 1.0

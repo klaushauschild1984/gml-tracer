@@ -20,31 +20,23 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.evaluate.number;
+package de.hauschild.gmltracer.tracer;
 
-import java.util.Map;
-import java.util.Stack;
+import java.util.List;
 
-import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.BooleanToken;
-import de.hauschild.gmltracer.gml.token.base.NumberToken;
-import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+
+import de.hauschild.gmltracer.tracer.light.Light;
+import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class LessEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
+public interface Raytracer {
 
-  @Override
-  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    if (firstToken.getValue() < secondToken.getValue()) {
-      tokenStack.push(BooleanToken.TRUE);
-    } else {
-      tokenStack.push(BooleanToken.FALSE);
-    }
-  }
+  void render(Vector3D ambientLightIntensity, List<Light> lights, Shape scene, int depth, double fieldOfView, int width, int height,
+      String fileName);
 
 }

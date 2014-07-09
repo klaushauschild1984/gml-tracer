@@ -20,31 +20,30 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.evaluate.number;
+package de.hauschild.gmltracer.gml.token.evaluate.point;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.BooleanToken;
 import de.hauschild.gmltracer.gml.token.base.NumberToken;
-import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
+import de.hauschild.gmltracer.gml.token.geometry.PointToken;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class LessEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
+public class PointEvaluate implements Evaluate {
 
   @Override
-  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    if (firstToken.getValue() < secondToken.getValue()) {
-      tokenStack.push(BooleanToken.TRUE);
-    } else {
-      tokenStack.push(BooleanToken.FALSE);
-    }
+  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final NumberToken z = (NumberToken) tokenStack.pop();
+    final NumberToken y = (NumberToken) tokenStack.pop();
+    final NumberToken x = (NumberToken) tokenStack.pop();
+    final PointToken pointToken = new PointToken(x.getValue(), y.getValue(), z.getValue());
+    tokenStack.push(pointToken);
   }
 
 }

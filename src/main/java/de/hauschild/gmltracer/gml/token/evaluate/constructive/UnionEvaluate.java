@@ -20,21 +20,29 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer.gml.token.evaluate.constructive;
+
+import java.util.Map;
+import java.util.Stack;
+
+import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
+import de.hauschild.gmltracer.gml.token.geometry.ShapeToken;
+import de.hauschild.gmltracer.tracer.shape.tier1.Union;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class NumberToken extends AbstractValueToken<Double> {
+public class UnionEvaluate extends AbstractDoubleEvaluate<ShapeToken, ShapeToken> {
 
-  public NumberToken(final double value) {
-    super(value);
-  }
-
-  public NumberToken(final String number) {
-    super(Double.parseDouble(number));
+  @Override
+  protected void evaluate(final ShapeToken firstToken, final ShapeToken secondToken, final Stack<Token> tokenStack,
+      final Map<String, Token> environment) {
+    final Union union = new Union(firstToken.getValue(), secondToken.getValue());
+    final ShapeToken unionToken = new ShapeToken(union);
+    tokenStack.push(unionToken);
   }
 
 }

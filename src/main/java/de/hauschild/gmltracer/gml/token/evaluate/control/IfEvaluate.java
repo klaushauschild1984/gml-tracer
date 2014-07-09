@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.base.BooleanToken;
+import de.hauschild.gmltracer.gml.token.base.FunctionToken;
 import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
-import de.hauschild.gmltracer.gml.token.impl.BooleanToken;
-import de.hauschild.gmltracer.gml.token.impl.FunctionToken;
 
 /**
  * @since 1.0

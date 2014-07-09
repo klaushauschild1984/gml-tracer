@@ -20,31 +20,38 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.evaluate.number;
+package de.hauschild.gmltracer.tracer;
 
-import java.util.Map;
-import java.util.Stack;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.BooleanToken;
-import de.hauschild.gmltracer.gml.token.base.NumberToken;
-import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Stopwatch;
+
+import de.hauschild.gmltracer.tracer.light.Light;
+import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class LessEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
+public abstract class AbstractRaytracer implements Raytracer {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(AbstractRaytracer.class);
 
   @Override
-  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    if (firstToken.getValue() < secondToken.getValue()) {
-      tokenStack.push(BooleanToken.TRUE);
-    } else {
-      tokenStack.push(BooleanToken.FALSE);
-    }
+  public void render(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
+      final double fieldOfView, final int width, final int height, final String fileName) {
+    final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    LOGGER.info("begin raytracing...");
+    final Stopwatch stopwatch = Stopwatch.createStarted();
+    // ...
+    LOGGER.info("raytracing took {}ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
   }
 
 }

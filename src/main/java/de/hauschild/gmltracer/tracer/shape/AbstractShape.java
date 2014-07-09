@@ -20,22 +20,18 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer.tracer.shape;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class StringToken extends AbstractValueToken<String> {
-
-  public StringToken(final String string) {
-    super(string);
-  }
+public abstract class AbstractShape implements Shape {
 
   @Override
-  public String toString() {
-    return String.format("\"%s\"", getValue());
+  public void translate(final double x, final double y, final double z) {
+    // TODO Auto-generated method stub
   }
 
 }

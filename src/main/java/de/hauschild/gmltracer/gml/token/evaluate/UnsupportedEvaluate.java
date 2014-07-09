@@ -20,7 +20,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer.gml.token.evaluate;
 
 import java.util.Map;
 import java.util.Stack;
@@ -32,26 +32,12 @@ import de.hauschild.gmltracer.gml.token.Token;
  * 
  * @author Klaus Hauschild
  */
-public abstract class AbstractValueToken<T> implements Token {
-
-  private final T value;
-
-  protected AbstractValueToken(final T theValue) {
-    value = theValue;
-  }
+@Deprecated
+public class UnsupportedEvaluate implements Evaluate {
 
   @Override
   public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    tokenStack.push(this);
-  }
-
-  public T getValue() {
-    return value;
-  }
-
-  @Override
-  public String toString() {
-    return value.toString();
+    throw new UnsupportedOperationException();
   }
 
 }

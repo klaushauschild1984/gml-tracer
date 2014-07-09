@@ -20,20 +20,33 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer.gml.token.base;
+
+import java.util.Map;
+import java.util.Stack;
+
+import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class BooleanToken extends AbstractValueToken<Boolean> {
+public class BinderToken extends AbstractValueToken<String> {
 
-  public static final BooleanToken TRUE = new BooleanToken(Boolean.TRUE.toString());
-  public static final BooleanToken FALSE = new BooleanToken(Boolean.FALSE.toString());
+  public BinderToken(final String binder) {
+    super(binder);
+  }
 
-  public BooleanToken(final String bool) {
-    super(Boolean.parseBoolean(bool));
+  @Override
+  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final Token token = tokenStack.pop();
+    environment.put(getValue(), token);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("/%s", getValue());
   }
 
 }

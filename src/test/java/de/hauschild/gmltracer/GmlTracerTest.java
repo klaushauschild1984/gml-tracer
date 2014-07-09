@@ -20,43 +20,22 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer;
 
-import java.util.List;
-
-import de.hauschild.gmltracer.gml.token.Token;
+import org.testng.annotations.Test;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public abstract class AbstractContainerToken extends AbstractValueToken<List<Token>> {
+public class GmlTracerTest {
 
-  private static final String SPACE = " ";
-
-  protected AbstractContainerToken(final List<Token> tokens) {
-    super(tokens);
+  @Test
+  public void threeSpheresTest() throws Exception {
+    GmlTracer.main(new String[] {
+      "src/test/resources/de/hauschild/gmltracer/gml/three-spheres.gml",
+    });
   }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append(toStringBegin());
-    builder.append(SPACE);
-    for (final Token token : getValue()) {
-      builder.append(token);
-      builder.append(toStringSeparator());
-    }
-    builder.append(SPACE);
-    builder.append(toStringEnd());
-    return builder.toString();
-  }
-
-  protected abstract String toStringBegin();
-
-  protected abstract String toStringEnd();
-
-  protected abstract String toStringSeparator();
 
 }

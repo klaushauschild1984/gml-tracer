@@ -20,33 +20,30 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer.gml.token.evaluate.light;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
+import de.hauschild.gmltracer.gml.token.geometry.PointToken;
+import de.hauschild.gmltracer.gml.token.light.LightToken;
+import de.hauschild.gmltracer.tracer.light.tier1.DirectionalLight;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class BinderToken extends AbstractValueToken<String> {
-
-  public BinderToken(final String binder) {
-    super(binder);
-  }
+public class DirectionalLightEvaluate extends AbstractDoubleEvaluate<PointToken, PointToken> {
 
   @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final Token token = tokenStack.pop();
-    environment.put(getValue(), token);
-  }
-
-  @Override
-  public String toString() {
-    return String.format("/%s", getValue());
+  protected void evaluate(final PointToken directionToken, final PointToken colorToken, final Stack<Token> tokenStack,
+      final Map<String, Token> environment) {
+    final DirectionalLight directionalLight = new DirectionalLight(directionToken.getValue(), colorToken.getValue());
+    final LightToken lightToken = new LightToken(directionalLight);
+    tokenStack.push(lightToken);
   }
 
 }

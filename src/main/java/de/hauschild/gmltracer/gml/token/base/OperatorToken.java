@@ -20,18 +20,25 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.impl;
+package de.hauschild.gmltracer.gml.token.base;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
 import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.UnsupportedEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.constructive.UnionEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.control.ApplyEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.control.IfEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.geometricprimitives.SphereEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.light.DirectionalLightEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.number.LessEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.number.MulEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.number.SubEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.point.PointEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.render.RenderEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.transformations.TranslateEvaluate;
 
 /**
  * @since 1.0
@@ -48,68 +55,68 @@ public class OperatorToken implements Token {
     APPLY(new ApplyEvaluate()),
 
     // number operators
-    ADDI(null), //
-    ADDF(null), //
-    ACOS(null), //
-    ASIN(null), //
-    CLAMPF(null), //
-    COS(null), //
-    DIVI(null), //
-    DIVF(null), //
-    EQI(null), //
-    EQF(null), //
-    FLOOR(null), //
-    FRAC(null), //
+    ADDI(new UnsupportedEvaluate()), //
+    ADDF(new UnsupportedEvaluate()), //
+    ACOS(new UnsupportedEvaluate()), //
+    ASIN(new UnsupportedEvaluate()), //
+    CLAMPF(new UnsupportedEvaluate()), //
+    COS(new UnsupportedEvaluate()), //
+    DIVI(new UnsupportedEvaluate()), //
+    DIVF(new UnsupportedEvaluate()), //
+    EQI(new UnsupportedEvaluate()), //
+    EQF(new UnsupportedEvaluate()), //
+    FLOOR(new UnsupportedEvaluate()), //
+    FRAC(new UnsupportedEvaluate()), //
     LESSI(new LessEvaluate()), //
     LESSF(new LessEvaluate()), //
-    MODI(null), //
+    MODI(new UnsupportedEvaluate()), //
     MULI(new MulEvaluate()), //
     MULF(new MulEvaluate()), //
-    NEGI(null), //
-    NEGF(null), //
-    REAL(null), //
-    SIN(null), //
-    SQRT(null), //
+    NEGI(new UnsupportedEvaluate()), //
+    NEGF(new UnsupportedEvaluate()), //
+    REAL(new UnsupportedEvaluate()), //
+    SIN(new UnsupportedEvaluate()), //
+    SQRT(new UnsupportedEvaluate()), //
     SUBI(new SubEvaluate()), //
     SUBF(new SubEvaluate()),
 
     // point operators
-    GETX(null), //
-    GETY(null), //
-    GETZ(null), //
-    POINT(null),
+    GETX(new UnsupportedEvaluate()), //
+    GETY(new UnsupportedEvaluate()), //
+    GETZ(new UnsupportedEvaluate()), //
+    POINT(new PointEvaluate()),
 
     // array operators
-    GET(null), //
-    LENGTH(null),
+    GET(new UnsupportedEvaluate()), //
+    LENGTH(new UnsupportedEvaluate()),
 
     // geometric primitive operators
-    SPHERE(null), //
-    CUBE(null), //
-    CYLINDER(null), //
-    CONE(null), //
-    PLANE(null),
+    SPHERE(new SphereEvaluate()), //
+    CUBE(new UnsupportedEvaluate()), //
+    CYLINDER(new UnsupportedEvaluate()), //
+    CONE(new UnsupportedEvaluate()), //
+    PLANE(new UnsupportedEvaluate()),
 
     // transformation operators
-    TRANSLATE(null), //
-    SCALE(null), //
-    USCALE(null), //
-    ROTATEX(null), //
-    ROTATEY(null), //
-    ROTATEZ(null),
+    TRANSLATE(new TranslateEvaluate()), //
+    SCALE(new UnsupportedEvaluate()), //
+    USCALE(new UnsupportedEvaluate()), //
+    ROTATEX(new UnsupportedEvaluate()), //
+    ROTATEY(new UnsupportedEvaluate()), //
+    ROTATEZ(new UnsupportedEvaluate()),
 
     // light operators
-    LIGHT(null), //
-    POINTLIGHT(null), //
-    SPOTLIGHT(null),
+    LIGHT(new DirectionalLightEvaluate()), //
+    POINTLIGHT(new UnsupportedEvaluate()), //
+    SPOTLIGHT(new UnsupportedEvaluate()),
 
     // constructive solid geometry operators
-    UNION(null), //
-    INTERSECT(null), //
-    DIFFERENCE(null),
+    UNION(new UnionEvaluate()), //
+    INTERSECT(new UnsupportedEvaluate()), //
+    DIFFERENCE(new UnsupportedEvaluate()),
 
     // rendering operator
-    RENDER(null),
+    RENDER(new RenderEvaluate()),
 
     ;
 
@@ -120,6 +127,9 @@ public class OperatorToken implements Token {
     }
 
     public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+      if (evaluate instanceof UnsupportedEvaluate) {
+        throw new UnsupportedOperationException(String.format("[%s] not implemented!", this));
+      }
       evaluate.evaluate(tokenStack, environment);
     }
 

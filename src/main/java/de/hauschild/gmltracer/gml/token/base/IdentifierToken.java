@@ -20,31 +20,28 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml.token.evaluate.number;
+package de.hauschild.gmltracer.gml.token.base;
 
 import java.util.Map;
 import java.util.Stack;
 
 import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.BooleanToken;
-import de.hauschild.gmltracer.gml.token.base.NumberToken;
-import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class LessEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
+public class IdentifierToken extends AbstractValueToken<String> {
+
+  public IdentifierToken(final String identifier) {
+    super(identifier);
+  }
 
   @Override
-  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    if (firstToken.getValue() < secondToken.getValue()) {
-      tokenStack.push(BooleanToken.TRUE);
-    } else {
-      tokenStack.push(BooleanToken.FALSE);
-    }
+  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final Token token = environment.get(getValue());
+    tokenStack.push(token);
   }
 
 }
