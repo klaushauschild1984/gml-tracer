@@ -29,5 +29,5 @@ scene                     % scene to render
 2                         % tracing depth
 60.0                      % field of view
 480 480                   % image wid and height
-"target/test-sphere.ppm"  % output file
+"target/test-sphere.png"  % output file
 render
