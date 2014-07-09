@@ -33,17 +33,18 @@ import com.google.common.collect.Lists;
  * 
  * @author Klaus Hauschild
  */
-public class StraightForwardPointIterator implements Iterator<Point> {
+public class PointIterator implements Iterator<Point> {
 
   private final Iterator<Point> delegate;
 
-  public StraightForwardPointIterator(final int width, final int height) {
+  public PointIterator(final int width, final int height) {
     final List<Point> points = Lists.newArrayList();
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         points.add(new Point(x, y));
       }
     }
+    postProcess(points);
     delegate = points.iterator();
   }
 
@@ -60,6 +61,9 @@ public class StraightForwardPointIterator implements Iterator<Point> {
   @Override
   public void remove() {
     throw new UnsupportedOperationException();
+  }
+
+  protected void postProcess(final List<Point> points) {
   }
 
 }

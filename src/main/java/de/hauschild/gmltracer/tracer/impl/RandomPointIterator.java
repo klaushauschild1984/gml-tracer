@@ -24,44 +24,22 @@ package de.hauschild.gmltracer.tracer.impl;
 
 import java.awt.Point;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class RandomPointIterator implements Iterator<Point> {
-
-  private final Iterator<Point> delegate;
+public class RandomPointIterator extends PointIterator {
 
   public RandomPointIterator(final int width, final int height) {
-    final List<Point> points = Lists.newArrayList();
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        points.add(new Point(x, y));
-      }
-    }
+    super(width, height);
+  }
+
+  @Override
+  protected void postProcess(final List<Point> points) {
     Collections.shuffle(points);
-    delegate = points.iterator();
-  }
-
-  @Override
-  public boolean hasNext() {
-    return delegate.hasNext();
-  }
-
-  @Override
-  public Point next() {
-    return delegate.next();
-  }
-
-  @Override
-  public void remove() {
-    throw new UnsupportedOperationException();
   }
 
 }
