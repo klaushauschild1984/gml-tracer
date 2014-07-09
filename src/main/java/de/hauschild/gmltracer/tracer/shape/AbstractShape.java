@@ -26,6 +26,9 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 
+import de.hauschild.gmltracer.tracer.impl.Intersection;
+import de.hauschild.gmltracer.tracer.impl.Ray;
+
 /**
  * @since 1.0
  * 
@@ -33,7 +36,38 @@ import org.apache.commons.math3.linear.RealMatrix;
  */
 public abstract class AbstractShape implements Shape {
 
+  private final SurfaceFunction surfaceFunction;
   private RealMatrix transformation = MatrixUtils.createRealIdentityMatrix(4);
+
+  protected AbstractShape(final SurfaceFunction theSurfaceFunction) {
+    surfaceFunction = theSurfaceFunction;
+  }
+
+  public SurfaceFunction getSurfaceFunction() {
+    return surfaceFunction;
+  }
+
+  @Override
+  public SurfaceProperties getSurfaceProperties(final Vector3D intersection) {
+    final Vector3D objectCoordinates = objectCoordinates(intersection);
+    final SurfaceProperties surefaceProperties = getSurfaceFunction().apply((int) objectCoordinates.getX(), objectCoordinates.getY(),
+        objectCoordinates.getZ());
+    return surefaceProperties;
+  }
+
+  @Override
+  public final Intersection intersect(final Ray ray) {
+    return intersect(ray, null);
+  }
+
+  public final Intersection intersect(final Ray ray, final Shape shapeToIgnore) {
+    if (shapeToIgnore != null && shapeToIgnore == this) {
+      return null;
+    }
+    return intersect_(ray);
+  }
+
+  public abstract Vector3D objectCoordinates(final Vector3D intersection);
 
   @Override
   public void translate(final double x, final double y, final double z) {
@@ -50,6 +84,8 @@ public abstract class AbstractShape implements Shape {
     });
     transformBy(translation);
   }
+
+  protected abstract Intersection intersect_(final Ray ray);
 
   protected Vector3D objectToWorld(final Vector3D point) {
     return transform(transformation, point);

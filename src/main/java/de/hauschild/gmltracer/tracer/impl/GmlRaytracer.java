@@ -48,8 +48,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Stopwatch;
 
 import de.hauschild.gmltracer.tracer.Raytracer;
+import de.hauschild.gmltracer.tracer.Vector3DUtils;
 import de.hauschild.gmltracer.tracer.light.Light;
 import de.hauschild.gmltracer.tracer.shape.Shape;
+import de.hauschild.gmltracer.tracer.shape.SurfaceProperties;
 
 /**
  * @since 1.0
@@ -148,6 +150,13 @@ public class GmlRaytracer implements Raytracer {
     }
   }
 
+  private Color convert(final Vector3D color) {
+    final int r = (int) (255 * Math.min(1.0, color.getX()));
+    final int g = (int) (255 * Math.min(1.0, color.getY()));
+    final int b = (int) (255 * Math.min(1.0, color.getZ()));
+    return new Color(r, g, b);
+  }
+
   private Color renderPoint(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
       final double fieldOfView, final int width, final int height, final Point point) {
     final double worldWidth = 2.0 * Math.tan(Math.toRadians(0.5 * fieldOfView));
@@ -156,18 +165,43 @@ public class GmlRaytracer implements Raytracer {
     final double pixelSizeY = worldHeight / height;
     final Ray ray = new Ray(new Vector3D(0.0, 0.0, -1.0), new Vector3D(-(worldWidth - 2 * (point.x + 0.5) * pixelSizeX), worldHeight - 2
         * (point.y + 0.5) * pixelSizeY, 1.0));
-    return renderRay(ambientLightIntensity, lights, scene, depth, ray);
+    final Vector3D color = renderRay(ambientLightIntensity, lights, scene, depth, ray);
+    return convert(color);
   }
 
-  private Color renderRay(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth, final Ray ray) {
+  private Vector3D renderRay(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
+      final Ray ray) {
     if (depth == 0) {
-      return Color.BLACK;
+      return Vector3D.ZERO;
     }
     final Intersection intersection = scene.intersect(ray);
     if (intersection == null) {
-      return Color.BLACK;
+      return Vector3D.ZERO;
     }
-    return Color.RED;
+    final SurfaceProperties surfaceProperties = scene.getSurfaceProperties(intersection.getPoint());
+    // ambient color
+    final Vector3D ambientColor = Vector3DUtils.multiplyComponentwise(surfaceProperties.getColor(), ambientLightIntensity).scalarMultiply(
+        surfaceProperties.getDiffuseReflectionCoefficient());
+    // light color
+    Vector3D lightColor = Vector3D.ZERO;
+    for (final Light light : lights) {
+      if (!light.isInShadow(scene, intersection)) {
+        final Vector3D currentLightColor = light.illuminates(surfaceProperties.getColor(), intersection);
+        lightColor = lightColor.add(currentLightColor);
+      }
+    }
+    lightColor = lightColor.scalarMultiply(surfaceProperties.getDiffuseReflectionCoefficient());
+    // XXX specular color for reflected ray
+    // final Ray reflectedRay = Vector3DUtils.reflectRay(ray, intersection.getNormal());
+    // Vector3D specularColor = renderRay(reflectedRay, scene, ambientLightIntensity, lights, tracingDepth,
+    // currentTracingDepth + 1);
+    // Vector3D specularColor = multiplyComponentwise(specularColor, surfaceProperties.getColor()).scalarMultiply(
+    // surfaceProperties.getSpecularReflectionCoefficient());
+    // XXX remove me
+    final Vector3D specularColor = Vector3D.ZERO;
+    // XXX remove me
+    // compute color
+    return ambientColor.add(lightColor).add(specularColor);
   }
 
 }

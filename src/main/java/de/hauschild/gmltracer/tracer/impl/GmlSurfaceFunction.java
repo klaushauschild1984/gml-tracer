@@ -20,48 +20,53 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.gml;
+package de.hauschild.gmltracer.tracer.impl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.Maps;
 
 import de.hauschild.gmltracer.gml.token.Token;
 import de.hauschild.gmltracer.gml.token.base.FunctionToken;
+import de.hauschild.gmltracer.gml.token.base.NumberToken;
 import de.hauschild.gmltracer.gml.token.evaluate.control.ApplyEvaluate;
+import de.hauschild.gmltracer.gml.token.geometry.PointToken;
+import de.hauschild.gmltracer.tracer.shape.SurfaceFunction;
+import de.hauschild.gmltracer.tracer.shape.SurfaceProperties;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public class GMLInterpreter {
+public class GmlSurfaceFunction implements SurfaceFunction {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GMLInterpreter.class);
+  private final FunctionToken surfaceFunction;
 
-  private final Stopwatch stopwatch = Stopwatch.createUnstarted();
-  private final GMLExtractor gmlExtractor;
-
-  public GMLInterpreter(final GMLExtractor theGmlExtractor) {
-    gmlExtractor = theGmlExtractor;
+  public GmlSurfaceFunction(final FunctionToken theSurfaceFunction) {
+    surfaceFunction = theSurfaceFunction;
   }
 
-  public Stack<Token> interpret() {
-    final List<Token> tokens = gmlExtractor.extract();
+  @Override
+  public SurfaceProperties apply(final int face, final double u, final double v) {
+    // prepare function
     final Stack<Token> tokenStack = new Stack<>();
     final Map<String, Token> environment = Maps.newHashMap();
-    LOGGER.info("begin interpretation...");
-    stopwatch.start();
-    new FunctionToken(tokens).evaluate(tokenStack, environment);
+    tokenStack.push(new NumberToken(face));
+    tokenStack.push(new NumberToken(u));
+    tokenStack.push(new NumberToken(v));
+    tokenStack.push(surfaceFunction);
+    // evaluate
     new ApplyEvaluate().evaluate(tokenStack, environment);
-    stopwatch.stop();
-    LOGGER.info("interpretation took {}", stopwatch);
-    return tokenStack;
+    // extract properties
+    final double phongExponent = ((NumberToken) tokenStack.pop()).getValue();
+    final double specularReflectionCoefficient = ((NumberToken) tokenStack.pop()).getValue();
+    final double diffuseReflectionCoefficient = ((NumberToken) tokenStack.pop()).getValue();
+    final Vector3D color = ((PointToken) tokenStack.pop()).getValue();
+    return new SurfaceProperties(color, diffuseReflectionCoefficient, specularReflectionCoefficient, phongExponent);
   }
+
 }

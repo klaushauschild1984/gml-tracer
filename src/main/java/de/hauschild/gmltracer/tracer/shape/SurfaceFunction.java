@@ -22,24 +22,13 @@
  */
 package de.hauschild.gmltracer.tracer.shape;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
-import de.hauschild.gmltracer.tracer.impl.Intersection;
-import de.hauschild.gmltracer.tracer.impl.Ray;
-
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public interface Shape {
+public interface SurfaceFunction {
 
-  SurfaceProperties getSurfaceProperties(Vector3D intersection);
-
-  Intersection intersect(Ray ray);
-
-  Intersection intersect(Ray shadowRay, Shape shape);
-
-  void translate(double x, double y, double z);
+  SurfaceProperties apply(final int face, final double u, final double v);
 
 }

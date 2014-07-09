@@ -27,6 +27,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import de.hauschild.gmltracer.tracer.impl.Intersection;
 import de.hauschild.gmltracer.tracer.impl.Ray;
 import de.hauschild.gmltracer.tracer.shape.AbstractShape;
+import de.hauschild.gmltracer.tracer.shape.SurfaceFunction;
 
 /**
  * @since 1.0
@@ -35,8 +36,12 @@ import de.hauschild.gmltracer.tracer.shape.AbstractShape;
  */
 public class Sphere extends AbstractShape {
 
+  public Sphere(final SurfaceFunction surfaceFunction) {
+    super(surfaceFunction);
+  }
+
   @Override
-  public Intersection intersect(final Ray ray) {
+  public Intersection intersect_(final Ray ray) {
     final Vector3D position = worldToObject(ray.getBegin());
     final Vector3D direction = worldToObject(ray.getEnd()).subtract(position).normalize();
     final double a = 1;
@@ -71,6 +76,13 @@ public class Sphere extends AbstractShape {
     }
     final Vector3D hitPoint = direction.scalarMultiply(t).add(position);
     return new Intersection(objectToWorld(hitPoint), this, hitPoint);
+  }
+
+  @Override
+  public Vector3D objectCoordinates(final Vector3D intersection) {
+    final double u = Math.atan(Math.toRadians(intersection.getX() / intersection.getZ()));
+    final double v = (intersection.getY() + 1.0) / 2.0;
+    return new Vector3D(0.0, u, v);
   }
 
   @Override

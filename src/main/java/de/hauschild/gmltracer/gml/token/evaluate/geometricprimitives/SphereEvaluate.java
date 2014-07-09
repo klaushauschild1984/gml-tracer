@@ -29,6 +29,7 @@ import de.hauschild.gmltracer.gml.token.Token;
 import de.hauschild.gmltracer.gml.token.base.FunctionToken;
 import de.hauschild.gmltracer.gml.token.evaluate.AbstractSingleEvaluate;
 import de.hauschild.gmltracer.gml.token.geometry.ShapeToken;
+import de.hauschild.gmltracer.tracer.impl.GmlSurfaceFunction;
 import de.hauschild.gmltracer.tracer.shape.tier1.Sphere;
 
 /**
@@ -39,8 +40,8 @@ import de.hauschild.gmltracer.tracer.shape.tier1.Sphere;
 public class SphereEvaluate extends AbstractSingleEvaluate<FunctionToken> {
 
   @Override
-  protected void evaluate(final FunctionToken token, final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final ShapeToken sphereToken = new ShapeToken(new Sphere());
+  protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
+    final ShapeToken sphereToken = new ShapeToken(new Sphere(new GmlSurfaceFunction(functionToken)));
     tokenStack.push(sphereToken);
   }
 

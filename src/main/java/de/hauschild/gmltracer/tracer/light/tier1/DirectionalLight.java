@@ -24,7 +24,11 @@ package de.hauschild.gmltracer.tracer.light.tier1;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
+import de.hauschild.gmltracer.tracer.Vector3DUtils;
+import de.hauschild.gmltracer.tracer.impl.Intersection;
+import de.hauschild.gmltracer.tracer.impl.Ray;
 import de.hauschild.gmltracer.tracer.light.AbstractLight;
+import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
@@ -39,6 +43,20 @@ public class DirectionalLight extends AbstractLight {
   public DirectionalLight(final Vector3D theDirection, final Vector3D theColor) {
     direction = theDirection;
     color = theColor;
+  }
+
+  @Override
+  public Vector3D illuminates(final Vector3D surfaceColor, final Intersection intersection) {
+    final double dotProduct = Vector3D.dotProduct(intersection.getNormal(), direction.negate());
+    final double lightIntensity = Math.max(0.0, dotProduct);
+    return Vector3DUtils.multiplyComponentwise(surfaceColor, color).scalarMultiply(lightIntensity);
+  }
+
+  @Override
+  public boolean isInShadow(final Shape scene, final Intersection intersection) {
+    final Ray shadowRay = new Ray(intersection.getPoint(), intersection.getPoint().add(direction.negate()));
+    final Intersection shadowIntersection = scene.intersect(shadowRay, intersection.getShape());
+    return shadowIntersection != null;
   }
 
   @Override

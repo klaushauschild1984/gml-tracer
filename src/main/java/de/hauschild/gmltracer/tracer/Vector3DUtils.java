@@ -20,26 +20,22 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.tracer.shape;
+package de.hauschild.gmltracer.tracer;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
-import de.hauschild.gmltracer.tracer.impl.Intersection;
-import de.hauschild.gmltracer.tracer.impl.Ray;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public interface Shape {
+public final class Vector3DUtils {
 
-  SurfaceProperties getSurfaceProperties(Vector3D intersection);
+  public static Vector3D multiplyComponentwise(final Vector3D a, final Vector3D b) {
+    return new Vector3D(a.getX() * b.getX(), a.getY() * b.getY(), a.getZ() * b.getZ());
+  }
 
-  Intersection intersect(Ray ray);
-
-  Intersection intersect(Ray shadowRay, Shape shape);
-
-  void translate(double x, double y, double z);
+  private Vector3DUtils() {
+  }
 
 }

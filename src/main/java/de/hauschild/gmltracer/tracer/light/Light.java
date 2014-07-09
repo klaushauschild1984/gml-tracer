@@ -22,11 +22,20 @@
  */
 package de.hauschild.gmltracer.tracer.light;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+
+import de.hauschild.gmltracer.tracer.impl.Intersection;
+import de.hauschild.gmltracer.tracer.shape.Shape;
+
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
 public interface Light {
+
+  Vector3D illuminates(Vector3D color, Intersection intersection);
+
+  boolean isInShadow(Shape scene, Intersection intersection);
 
 }

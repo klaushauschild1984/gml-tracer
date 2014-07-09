@@ -24,22 +24,40 @@ package de.hauschild.gmltracer.tracer.shape;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import de.hauschild.gmltracer.tracer.impl.Intersection;
-import de.hauschild.gmltracer.tracer.impl.Ray;
-
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public interface Shape {
+public class SurfaceProperties {
 
-  SurfaceProperties getSurfaceProperties(Vector3D intersection);
+  private final Vector3D color;
+  private final double diffuseReflectionCoefficient;
+  private final double specularReflectionCoefficient;
+  private final double phongExponent;
 
-  Intersection intersect(Ray ray);
+  public SurfaceProperties(final Vector3D theColor, final double theDiffuseReflectionCoefficient,
+      final double theSpecularReflectionCoefficient, final double thePhongExponent) {
+    color = theColor;
+    diffuseReflectionCoefficient = theDiffuseReflectionCoefficient;
+    specularReflectionCoefficient = theSpecularReflectionCoefficient;
+    phongExponent = thePhongExponent;
+  }
 
-  Intersection intersect(Ray shadowRay, Shape shape);
+  public Vector3D getColor() {
+    return color;
+  }
 
-  void translate(double x, double y, double z);
+  public double getDiffuseReflectionCoefficient() {
+    return diffuseReflectionCoefficient;
+  }
+
+  public double getPhongExponent() {
+    return phongExponent;
+  }
+
+  public double getSpecularReflectionCoefficient() {
+    return specularReflectionCoefficient;
+  }
 
 }
