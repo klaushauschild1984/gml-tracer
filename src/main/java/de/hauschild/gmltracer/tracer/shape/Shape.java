@@ -22,8 +22,6 @@
  */
 package de.hauschild.gmltracer.tracer.shape;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
 import de.hauschild.gmltracer.tracer.impl.Intersection;
 import de.hauschild.gmltracer.tracer.impl.Ray;
 
@@ -33,8 +31,6 @@ import de.hauschild.gmltracer.tracer.impl.Ray;
  * @author Klaus Hauschild
  */
 public interface Shape {
-
-  SurfaceProperties getSurfaceProperties(Vector3D intersection);
 
   Intersection intersect(Ray ray);
 

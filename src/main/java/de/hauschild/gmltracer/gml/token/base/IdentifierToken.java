@@ -40,7 +40,10 @@ public class IdentifierToken extends AbstractValueToken<String> {
 
   @Override
   public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final Token token = environment.get(getValue());
+    Token token = environment.get(getValue());
+    if (token instanceof FunctionToken) {
+      token = new FunctionToken((FunctionToken) token);
+    }
     tokenStack.push(token);
   }
 

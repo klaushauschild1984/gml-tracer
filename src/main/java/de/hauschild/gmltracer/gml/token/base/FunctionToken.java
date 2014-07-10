@@ -35,9 +35,14 @@ import de.hauschild.gmltracer.gml.token.Token;
  * 
  * @author Klaus Hauschild
  */
-public class FunctionToken extends AbstractContainerToken {
+public class FunctionToken extends AbstractContainerToken implements Cloneable {
 
   private Map<String, Token> environment;
+
+  public FunctionToken(final FunctionToken functionToken) {
+    super(functionToken.getValue());
+    environment = Maps.newHashMap(functionToken.getEnvironment());
+  }
 
   public FunctionToken(final List<Token> theTokens) {
     super(theTokens);

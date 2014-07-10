@@ -25,6 +25,7 @@ package de.hauschild.gmltracer.tracer.impl;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import de.hauschild.gmltracer.tracer.shape.Shape;
+import de.hauschild.gmltracer.tracer.shape.SurfaceProperties;
 
 /**
  * @since 1.0
@@ -36,11 +37,13 @@ public class Intersection {
   private final Vector3D point;
   private final Shape shape;
   private final Vector3D normal;
+  private final SurfaceProperties surfaceProperties;
 
-  public Intersection(final Vector3D thePoint, final Shape theShape, final Vector3D theNormal) {
+  public Intersection(final Vector3D thePoint, final Shape theShape, final Vector3D theNormal, final SurfaceProperties theSurfaceProperties) {
     point = thePoint;
     shape = theShape;
     normal = theNormal;
+    surfaceProperties = theSurfaceProperties;
   }
 
   public Vector3D getNormal() {
@@ -53,6 +56,10 @@ public class Intersection {
 
   public Shape getShape() {
     return shape;
+  }
+
+  public SurfaceProperties getSurfaceProperties() {
+    return surfaceProperties;
   }
 
 }

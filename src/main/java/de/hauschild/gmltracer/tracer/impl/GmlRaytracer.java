@@ -178,7 +178,7 @@ public class GmlRaytracer implements Raytracer {
     if (intersection == null) {
       return Vector3D.ZERO;
     }
-    final SurfaceProperties surfaceProperties = scene.getSurfaceProperties(intersection.getPoint());
+    final SurfaceProperties surfaceProperties = intersection.getSurfaceProperties();
     // ambient color
     final Vector3D ambientColor = Vector3DUtils.multiplyComponentwise(surfaceProperties.getColor(), ambientLightIntensity).scalarMultiply(
         surfaceProperties.getDiffuseReflectionCoefficient());

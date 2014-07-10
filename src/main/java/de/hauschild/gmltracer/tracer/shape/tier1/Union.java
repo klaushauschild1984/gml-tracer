@@ -28,7 +28,6 @@ import de.hauschild.gmltracer.tracer.impl.Intersection;
 import de.hauschild.gmltracer.tracer.impl.Ray;
 import de.hauschild.gmltracer.tracer.shape.AbstractShape;
 import de.hauschild.gmltracer.tracer.shape.Shape;
-import de.hauschild.gmltracer.tracer.shape.SurfaceFunction;
 
 /**
  * @since 1.0
@@ -39,7 +38,6 @@ public class Union extends AbstractShape {
 
   private final Shape first;
   private final Shape second;
-  private AbstractShape lastIntersected;
 
   public Union(final Shape theFirst, final Shape theSecond) {
     super(null);
@@ -48,27 +46,16 @@ public class Union extends AbstractShape {
   }
 
   @Override
-  public SurfaceFunction getSurfaceFunction() {
-    if (lastIntersected != null) {
-      return lastIntersected.getSurfaceFunction();
-    }
-    throw new IllegalStateException("nothing was intersected");
-  }
-
-  @Override
   public Intersection intersect_(final Ray ray) {
     final Intersection firstIntersection = first.intersect(ray);
     final Intersection secondIntersection = second.intersect(ray);
     if (firstIntersection == null && secondIntersection == null) {
-      lastIntersected = null;
       return null;
     }
     if (firstIntersection != null && secondIntersection == null) {
-      lastIntersected = (AbstractShape) first;
       return firstIntersection;
     }
     if (firstIntersection == null && secondIntersection != null) {
-      lastIntersected = (AbstractShape) second;
       return secondIntersection;
     }
     final double firstSquareLength = firstIntersection.getPoint().getX() * firstIntersection.getPoint().getX()
@@ -78,19 +65,14 @@ public class Union extends AbstractShape {
         + secondIntersection.getPoint().getY() * secondIntersection.getPoint().getY() + secondIntersection.getPoint().getZ()
         * secondIntersection.getPoint().getZ();
     if (firstSquareLength < secondSquareLength) {
-      lastIntersected = (AbstractShape) first;
       return firstIntersection;
     }
-    lastIntersected = (AbstractShape) second;
     return secondIntersection;
   }
 
   @Override
   public Vector3D objectCoordinates(final Vector3D intersection) {
-    if (lastIntersected != null) {
-      return lastIntersected.objectCoordinates(intersection);
-    }
-    throw new IllegalStateException("nothing was intersected");
+    return null;
   }
 
   @Override

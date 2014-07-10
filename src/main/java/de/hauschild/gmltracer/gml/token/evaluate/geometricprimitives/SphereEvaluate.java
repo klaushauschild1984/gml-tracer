@@ -41,7 +41,9 @@ public class SphereEvaluate extends AbstractSingleEvaluate<FunctionToken> {
 
   @Override
   protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final ShapeToken sphereToken = new ShapeToken(new Sphere(new GmlSurfaceFunction(functionToken)));
+    final GmlSurfaceFunction surfaceFunction = new GmlSurfaceFunction(new FunctionToken(functionToken));
+    final Sphere sphere = new Sphere(surfaceFunction);
+    final ShapeToken sphereToken = new ShapeToken(sphere);
     tokenStack.push(sphereToken);
   }
 

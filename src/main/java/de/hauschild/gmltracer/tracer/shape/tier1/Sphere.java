@@ -75,7 +75,8 @@ public class Sphere extends AbstractShape {
       t = t0;
     }
     final Vector3D hitPoint = direction.scalarMultiply(t).add(position);
-    return new Intersection(objectToWorld(hitPoint), this, hitPoint);
+    final Vector3D point = objectToWorld(hitPoint);
+    return new Intersection(point, this, hitPoint, getSurfaceProperties(point));
   }
 
   @Override

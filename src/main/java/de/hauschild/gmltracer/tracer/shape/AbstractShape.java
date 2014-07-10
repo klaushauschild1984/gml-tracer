@@ -48,18 +48,11 @@ public abstract class AbstractShape implements Shape {
   }
 
   @Override
-  public SurfaceProperties getSurfaceProperties(final Vector3D intersection) {
-    final Vector3D objectCoordinates = objectCoordinates(intersection);
-    final SurfaceProperties surefaceProperties = getSurfaceFunction().apply((int) objectCoordinates.getX(), objectCoordinates.getY(),
-        objectCoordinates.getZ());
-    return surefaceProperties;
-  }
-
-  @Override
   public final Intersection intersect(final Ray ray) {
     return intersect(ray, null);
   }
 
+  @Override
   public final Intersection intersect(final Ray ray, final Shape shapeToIgnore) {
     if (shapeToIgnore != null && shapeToIgnore == this) {
       return null;
@@ -83,6 +76,13 @@ public abstract class AbstractShape implements Shape {
         },
     });
     transformBy(translation);
+  }
+
+  protected synchronized SurfaceProperties getSurfaceProperties(final Vector3D intersection) {
+    final Vector3D objectCoordinates = objectCoordinates(intersection);
+    final SurfaceProperties surefaceProperties = getSurfaceFunction().apply((int) objectCoordinates.getX(), objectCoordinates.getY(),
+        objectCoordinates.getZ());
+    return surefaceProperties;
   }
 
   protected abstract Intersection intersect_(final Ray ray);
