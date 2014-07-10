@@ -46,7 +46,7 @@ public class Union extends AbstractShape {
   }
 
   @Override
-  public Intersection intersect_(final Ray ray) {
+  public Intersection intersectAfterIgnore(final Ray ray) {
     final Intersection firstIntersection = first.intersect(ray);
     final Intersection secondIntersection = second.intersect(ray);
     if (firstIntersection == null && secondIntersection == null) {
@@ -72,7 +72,7 @@ public class Union extends AbstractShape {
 
   @Override
   public Vector3D objectCoordinates(final Vector3D intersection) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   @Override

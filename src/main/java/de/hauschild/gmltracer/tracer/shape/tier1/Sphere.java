@@ -41,7 +41,7 @@ public class Sphere extends AbstractShape {
   }
 
   @Override
-  public Intersection intersect_(final Ray ray) {
+  public Intersection intersectAfterIgnore(final Ray ray) {
     final Vector3D position = worldToObject(ray.getBegin());
     final Vector3D direction = worldToObject(ray.getEnd()).subtract(position).normalize();
     final double a = 1;
