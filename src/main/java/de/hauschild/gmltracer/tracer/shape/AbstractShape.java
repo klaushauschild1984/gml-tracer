@@ -38,6 +38,7 @@ public abstract class AbstractShape implements Shape {
 
   private final SurfaceFunction surfaceFunction;
   private RealMatrix transformation = MatrixUtils.createRealIdentityMatrix(4);
+  private RealMatrix inverseTransformation = MatrixUtils.inverse(transformation);
 
   protected AbstractShape(final SurfaceFunction theSurfaceFunction) {
     surfaceFunction = theSurfaceFunction;
@@ -57,7 +58,7 @@ public abstract class AbstractShape implements Shape {
     if (shapeToIgnore != null && shapeToIgnore == this) {
       return null;
     }
-    return intersect_(ray);
+    return intersectAfterIgnore(ray);
   }
 
   public abstract Vector3D objectCoordinates(final Vector3D intersection);
@@ -78,21 +79,21 @@ public abstract class AbstractShape implements Shape {
     transformBy(translation);
   }
 
-  protected synchronized SurfaceProperties getSurfaceProperties(final Vector3D intersection) {
+  protected SurfaceProperties getSurfaceProperties(final Vector3D intersection) {
     final Vector3D objectCoordinates = objectCoordinates(intersection);
     final SurfaceProperties surefaceProperties = getSurfaceFunction().apply((int) objectCoordinates.getX(), objectCoordinates.getY(),
         objectCoordinates.getZ());
     return surefaceProperties;
   }
 
-  protected abstract Intersection intersect_(final Ray ray);
+  protected abstract Intersection intersectAfterIgnore(final Ray ray);
 
   protected Vector3D objectToWorld(final Vector3D point) {
     return transform(transformation, point);
   }
 
   protected Vector3D worldToObject(final Vector3D point) {
-    return transform(MatrixUtils.inverse(transformation), point);
+    return transform(inverseTransformation, point);
   }
 
   private Vector3D transform(final RealMatrix matrix, final Vector3D point) {
@@ -104,6 +105,7 @@ public abstract class AbstractShape implements Shape {
 
   private void transformBy(final RealMatrix matrix) {
     transformation = transformation.multiply(matrix);
+    inverseTransformation = MatrixUtils.inverse(transformation);
   }
 
 }
