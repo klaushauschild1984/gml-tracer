@@ -26,6 +26,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -62,7 +63,7 @@ public class GmlRaytracer implements Raytracer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(GmlRaytracer.class);
 
-  private final ExecutorService executorService = Executors.newFixedThreadPool(20);
+  private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
   @Override
   public void render(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
@@ -98,11 +99,14 @@ public class GmlRaytracer implements Raytracer {
         add(new JPanel() {
 
           {
-            setPreferredSize(new Dimension(width, height));
+            setPreferredSize(new Dimension(800, 800));
           }
 
           @Override
           public void paint(final Graphics graphics) {
+            final double scaleX = getPreferredSize().getWidth() / width;
+            final double scaleY = getPreferredSize().getHeight() / height;
+            ((Graphics2D) graphics).scale(scaleX, scaleY);
             graphics.drawImage(image, 0, 0, null);
           }
 
@@ -113,7 +117,7 @@ public class GmlRaytracer implements Raytracer {
       }
 
     };
-    final Iterator<Point> pointIterator = new RandomPointIterator(width, height);
+    final Iterator<Point> pointIterator = new PointIterator(width, height);
     final Stopwatch stopwatch = Stopwatch.createStarted();
     while (pointIterator.hasNext()) {
       final Point point = pointIterator.next();
