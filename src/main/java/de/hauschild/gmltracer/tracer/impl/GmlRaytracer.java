@@ -68,6 +68,7 @@ public class GmlRaytracer implements Raytracer {
   @Override
   public void render(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
       final double fieldOfView, final int width, final int height, final String fileName) {
+    final double aspectRatio = (double) height / width;
     final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     LOGGER.info("begin raytracing...");
     LOGGER.info("ambient light intensity: {}", ambientLightIntensity);
@@ -99,7 +100,7 @@ public class GmlRaytracer implements Raytracer {
         add(new JPanel() {
 
           {
-            setPreferredSize(new Dimension(800, 800));
+            setPreferredSize(new Dimension(800, (int) (800 * aspectRatio)));
           }
 
           @Override
