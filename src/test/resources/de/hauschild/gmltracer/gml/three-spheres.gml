@@ -15,8 +15,8 @@
 
 redSphere   -2.5 0.0 9.0 translate
 greenSphere  0.0 0.0 9.0 translate
-%blueSphere   2.5 0.0 9.0 translate
-%union
+blueSphere   2.5 0.0 9.0 translate
+union
 union
 /scene
 
