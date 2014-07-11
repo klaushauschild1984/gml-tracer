@@ -117,7 +117,7 @@ public class GmlRaytracer implements Raytracer {
       }
 
     };
-    final Iterator<Point> pointIterator = new PointIterator(width, height);
+    final Iterator<Point> pointIterator = new RandomPointIterator(width, height);
     final Stopwatch stopwatch = Stopwatch.createStarted();
     while (pointIterator.hasNext()) {
       final Point point = pointIterator.next();
@@ -189,10 +189,10 @@ public class GmlRaytracer implements Raytracer {
     // light color
     Vector3D lightColor = Vector3D.ZERO;
     for (final Light light : lights) {
-      if (!light.isInShadow(scene, intersection)) {
-        final Vector3D currentLightColor = light.illuminates(surfaceProperties.getColor(), intersection);
-        lightColor = lightColor.add(currentLightColor);
-      }
+      // if (!light.isInShadow(scene, intersection)) {
+      final Vector3D currentLightColor = light.illuminates(surfaceProperties.getColor(), intersection);
+      lightColor = lightColor.add(currentLightColor);
+      // }
     }
     lightColor = lightColor.scalarMultiply(surfaceProperties.getDiffuseReflectionCoefficient());
     // XXX specular color for reflected ray

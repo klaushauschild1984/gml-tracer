@@ -35,7 +35,8 @@ public class GmlTracerTest {
   public void threeSpheresTest() throws Exception {
     GmlTracer.main(new String[] {
       "src/test/resources/de/hauschild/gmltracer/gml/three-spheres.gml",
-    });
+    // "src/test/resources/de/hauschild/gmltracer/gml/samples/spheres2.gml",
+        });
   }
 
 }
