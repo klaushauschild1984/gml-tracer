@@ -22,13 +22,6 @@
  */
 package de.hauschild.gmltracer.gml.token.evaluate.geometricprimitives;
 
-import java.util.Map;
-import java.util.Stack;
-
-import de.hauschild.gmltracer.gml.token.Token;
-import de.hauschild.gmltracer.gml.token.base.FunctionToken;
-import de.hauschild.gmltracer.gml.token.evaluate.AbstractSingleEvaluate;
-import de.hauschild.gmltracer.gml.token.geometry.ShapeToken;
 import de.hauschild.gmltracer.tracer.impl.GmlSurfaceFunction;
 import de.hauschild.gmltracer.tracer.shape.tier1.Sphere;
 
@@ -37,14 +30,11 @@ import de.hauschild.gmltracer.tracer.shape.tier1.Sphere;
  * 
  * @author Klaus Hauschild
  */
-public class SphereEvaluate extends AbstractSingleEvaluate<FunctionToken> {
+public class SphereEvaluate extends AbstractShapeEvaluate<Sphere> {
 
   @Override
-  protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final GmlSurfaceFunction surfaceFunction = new GmlSurfaceFunction(new FunctionToken(functionToken));
-    final Sphere sphere = new Sphere(surfaceFunction);
-    final ShapeToken sphereToken = new ShapeToken(sphere);
-    tokenStack.push(sphereToken);
+  protected Sphere createShape(final GmlSurfaceFunction surfaceFunction) {
+    return new Sphere(surfaceFunction);
   }
 
 }

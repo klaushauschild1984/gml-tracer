@@ -20,37 +20,21 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer.tracer;
+package de.hauschild.gmltracer.gml.token.evaluate.geometricprimitives;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-
-import de.hauschild.gmltracer.tracer.impl.Ray;
+import de.hauschild.gmltracer.tracer.impl.GmlSurfaceFunction;
+import de.hauschild.gmltracer.tracer.shape.tier1.Plane;
 
 /**
  * @since 1.0
  * 
  * @author Klaus Hauschild
  */
-public final class Vector3DUtils {
+public class PlaneEvaluate extends AbstractShapeEvaluate<Plane> {
 
-  public static Vector3D multiplyComponentwise(final Vector3D a, final Vector3D b) {
-    return new Vector3D(a.getX() * b.getX(), a.getY() * b.getY(), a.getZ() * b.getZ());
-  }
-
-  public static Ray reflectRay(final Ray ray, final Vector3D normal) {
-    // vector of incoming ray
-    final Vector3D vector = new Vector3D(ray.getEnd().getX() - ray.getBegin().getX(), ray.getEnd().getY() - ray.getBegin().getY(), ray
-        .getEnd().getZ() - ray.getBegin().getZ());
-    // dot product of incoming ray vector and surface normal
-    final double dotProduct = Vector3D.dotProduct(vector, normal);
-    // reflected vector
-    final Vector3D reflectedVector = new Vector3D(-vector.getX() + 2 * normal.getX() * dotProduct, -vector.getY() + 2 * normal.getY()
-        * dotProduct, -vector.getZ() + 2 * normal.getZ() * dotProduct);
-    // reflected ray
-    return new Ray(ray.getEnd(), ray.getEnd().add(reflectedVector));
-  }
-
-  private Vector3DUtils() {
+  @Override
+  protected Plane createShape(final GmlSurfaceFunction surfaceFunction) {
+    return new Plane(surfaceFunction);
   }
 
 }

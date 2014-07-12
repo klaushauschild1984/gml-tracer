@@ -31,6 +31,7 @@ import de.hauschild.gmltracer.gml.token.evaluate.UnsupportedEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.constructive.UnionEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.control.ApplyEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.control.IfEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.geometricprimitives.PlaneEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.geometricprimitives.SphereEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.light.DirectionalLightEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.number.LessEvaluate;
@@ -95,7 +96,7 @@ public class OperatorToken implements Token {
     CUBE(new UnsupportedEvaluate()), //
     CYLINDER(new UnsupportedEvaluate()), //
     CONE(new UnsupportedEvaluate()), //
-    PLANE(new UnsupportedEvaluate()),
+    PLANE(new PlaneEvaluate()),
 
     // transformation operators
     TRANSLATE(new TranslateEvaluate()), //

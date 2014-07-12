@@ -166,10 +166,9 @@ public class GmlRaytracer implements Raytracer {
       final double fieldOfView, final int width, final int height, final Point point) {
     final double worldWidth = 2.0 * Math.tan(Math.toRadians(0.5 * fieldOfView));
     final double worldHeight = worldWidth * width / height;
-    final double pixelSizeX = worldWidth / width;
-    final double pixelSizeY = worldHeight / height;
-    final Ray ray = new Ray(new Vector3D(0.0, 0.0, -1.0), new Vector3D(-(worldWidth - 2 * (point.x + 0.5) * pixelSizeX), worldHeight - 2
-        * (point.y + 0.5) * pixelSizeY, 1.0));
+    final double pixelSize = worldWidth / width;
+    final Ray ray = new Ray(new Vector3D(0.0, 0.0, -1.0), new Vector3D(-(worldWidth - 2 * (point.x + 0.5) * pixelSize), worldHeight - 2
+        * (point.y + 0.5) * pixelSize, 1.0));
     final Vector3D color = renderRay(ambientLightIntensity, lights, scene, depth, ray);
     return convert(color);
   }
@@ -196,15 +195,11 @@ public class GmlRaytracer implements Raytracer {
       // }
     }
     lightColor = lightColor.scalarMultiply(surfaceProperties.getDiffuseReflectionCoefficient());
-    // XXX specular color for reflected ray
-    // final Ray reflectedRay = Vector3DUtils.reflectRay(ray, intersection.getNormal());
-    // Vector3D specularColor = renderRay(reflectedRay, scene, ambientLightIntensity, lights, tracingDepth,
-    // currentTracingDepth + 1);
-    // Vector3D specularColor = multiplyComponentwise(specularColor, surfaceProperties.getColor()).scalarMultiply(
-    // surfaceProperties.getSpecularReflectionCoefficient());
-    // XXX remove me
-    final Vector3D specularColor = Vector3D.ZERO;
-    // XXX remove me
+    // specular color for reflected ray
+    final Ray reflectedRay = Vector3DUtils.reflectRay(ray, intersection.getNormal());
+    Vector3D specularColor = renderRay(ambientLightIntensity, lights, scene, depth - 1, reflectedRay);
+    specularColor = Vector3DUtils.multiplyComponentwise(specularColor, surfaceProperties.getColor()).scalarMultiply(
+        surfaceProperties.getSpecularReflectionCoefficient());
     // compute color
     return ambientColor.add(lightColor).add(specularColor);
   }
