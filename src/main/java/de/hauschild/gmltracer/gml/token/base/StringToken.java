@@ -24,18 +24,17 @@ package de.hauschild.gmltracer.gml.token.base;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class StringToken extends AbstractValueToken<String> {
 
-  public StringToken(final String string) {
-    super(string);
-  }
+    public StringToken(final String string) {
+        super(string);
+    }
 
-  @Override
-  public String toString() {
-    return String.format("\"%s\"", getValue());
-  }
+    @Override
+    public String toString() {
+        return String.format("\"%s\"", getValue());
+    }
 
 }

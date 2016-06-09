@@ -30,41 +30,40 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class ArrayToken extends AbstractContainerToken {
 
-  public ArrayToken(final List<Token> theTokens) {
-    super(theTokens);
-  }
-
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final List<Token> tokens = getValue();
-    for (int i = 0; i < tokens.size(); i++) {
-      final Token token = tokens.get(i);
-      if (token instanceof IdentifierToken) {
-        final Token referencedToken = environment.get(((IdentifierToken) token).getValue());
-        tokens.set(i, referencedToken);
-      }
+    public ArrayToken(final List<Token> theTokens) {
+        super(theTokens);
     }
-    tokenStack.push(this);
-  }
 
-  @Override
-  protected String toStringBegin() {
-    return "[";
-  }
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final List<Token> tokens = getValue();
+        for (int i = 0; i < tokens.size(); i++) {
+            final Token token = tokens.get(i);
+            if (token instanceof IdentifierToken) {
+                final Token referencedToken = environment.get(((IdentifierToken) token).getValue());
+                tokens.set(i, referencedToken);
+            }
+        }
+        tokenStack.push(this);
+    }
 
-  @Override
-  protected String toStringEnd() {
-    return "]";
-  }
+    @Override
+    protected String toStringBegin() {
+        return "[";
+    }
 
-  @Override
-  protected String toStringSeparator() {
-    return ", ";
-  }
+    @Override
+    protected String toStringEnd() {
+        return "]";
+    }
+
+    @Override
+    protected String toStringSeparator() {
+        return ", ";
+    }
 
 }

@@ -32,19 +32,18 @@ import de.hauschild.gmltracer.gml.token.geometry.ShapeToken;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class TranslateEvaluate implements Evaluate {
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final NumberToken tz = (NumberToken) tokenStack.pop();
-    final NumberToken ty = (NumberToken) tokenStack.pop();
-    final NumberToken tx = (NumberToken) tokenStack.pop();
-    final ShapeToken shapeToken = (ShapeToken) tokenStack.pop();
-    shapeToken.getValue().translate(tx.getValue(), ty.getValue(), tz.getValue());
-    tokenStack.push(shapeToken);
-  }
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final NumberToken tz = (NumberToken) tokenStack.pop();
+        final NumberToken ty = (NumberToken) tokenStack.pop();
+        final NumberToken tx = (NumberToken) tokenStack.pop();
+        final ShapeToken shapeToken = (ShapeToken) tokenStack.pop();
+        shapeToken.getValue().translate(tx.getValue(), ty.getValue(), tz.getValue());
+        tokenStack.push(shapeToken);
+    }
 
 }

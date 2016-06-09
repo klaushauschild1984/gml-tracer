@@ -38,30 +38,29 @@ import de.hauschild.gmltracer.gml.token.evaluate.control.ApplyEvaluate;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class GMLInterpreter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GMLInterpreter.class);
+    private static final Logger LOGGER    = LoggerFactory.getLogger(GMLInterpreter.class);
 
-  private final Stopwatch stopwatch = Stopwatch.createUnstarted();
-  private final GMLExtractor gmlExtractor;
+    private final Stopwatch     stopwatch = Stopwatch.createUnstarted();
+    private final GMLExtractor  gmlExtractor;
 
-  public GMLInterpreter(final GMLExtractor theGmlExtractor) {
-    gmlExtractor = theGmlExtractor;
-  }
+    public GMLInterpreter(final GMLExtractor theGmlExtractor) {
+        gmlExtractor = theGmlExtractor;
+    }
 
-  public Stack<Token> interpret() {
-    final List<Token> tokens = gmlExtractor.extract();
-    final Stack<Token> tokenStack = new Stack<>();
-    final Map<String, Token> environment = Maps.newHashMap();
-    LOGGER.info("begin interpretation...");
-    stopwatch.start();
-    new FunctionToken(tokens).evaluate(tokenStack, environment);
-    new ApplyEvaluate().evaluate(tokenStack, environment);
-    stopwatch.stop();
-    LOGGER.info("interpretation took {}", stopwatch);
-    return tokenStack;
-  }
+    public Stack<Token> interpret() {
+        final List<Token> tokens = gmlExtractor.extract();
+        final Stack<Token> tokenStack = new Stack<>();
+        final Map<String, Token> environment = Maps.newHashMap();
+        LOGGER.info("begin interpretation...");
+        stopwatch.start();
+        new FunctionToken(tokens).evaluate(tokenStack, environment);
+        new ApplyEvaluate().evaluate(tokenStack, environment);
+        stopwatch.stop();
+        LOGGER.info("interpretation took {}", stopwatch);
+        return tokenStack;
+    }
 }

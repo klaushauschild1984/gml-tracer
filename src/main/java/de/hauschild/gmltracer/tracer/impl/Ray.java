@@ -26,25 +26,24 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class Ray {
 
-  private final Vector3D begin;
-  private final Vector3D end;
+    private final Vector3D begin;
+    private final Vector3D end;
 
-  public Ray(final Vector3D theBegin, final Vector3D theEnd) {
-    begin = theBegin;
-    end = theEnd;
-  }
+    public Ray(final Vector3D theBegin, final Vector3D theEnd) {
+        begin = theBegin;
+        end = theEnd;
+    }
 
-  public Vector3D getEnd() {
-    return end;
-  }
+    public Vector3D getEnd() {
+        return end;
+    }
 
-  public Vector3D getBegin() {
-    return begin;
-  }
+    public Vector3D getBegin() {
+        return begin;
+    }
 
 }

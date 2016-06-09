@@ -31,53 +31,52 @@ import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class Union extends AbstractShape {
 
-  private final Shape first;
-  private final Shape second;
+    private final Shape first;
+    private final Shape second;
 
-  public Union(final Shape theFirst, final Shape theSecond) {
-    super(null);
-    first = theFirst;
-    second = theSecond;
-  }
+    public Union(final Shape theFirst, final Shape theSecond) {
+        super(null);
+        first = theFirst;
+        second = theSecond;
+    }
 
-  @Override
-  public Intersection intersectAfterIgnore(final Ray ray) {
-    final Intersection firstIntersection = first.intersect(ray);
-    final Intersection secondIntersection = second.intersect(ray);
-    if (firstIntersection == null && secondIntersection == null) {
-      return null;
+    @Override
+    public Intersection intersectAfterIgnore(final Ray ray) {
+        final Intersection firstIntersection = first.intersect(ray);
+        final Intersection secondIntersection = second.intersect(ray);
+        if (firstIntersection == null && secondIntersection == null) {
+            return null;
+        }
+        if (firstIntersection != null && secondIntersection == null) {
+            return firstIntersection;
+        }
+        if (firstIntersection == null && secondIntersection != null) {
+            return secondIntersection;
+        }
+        final double firstSquareLength = firstIntersection.getPoint().getX() * firstIntersection.getPoint().getX()
+                + firstIntersection.getPoint().getY() * firstIntersection.getPoint().getY() + firstIntersection.getPoint().getZ()
+                * firstIntersection.getPoint().getZ();
+        final double secondSquareLength = secondIntersection.getPoint().getX() * secondIntersection.getPoint().getX()
+                + secondIntersection.getPoint().getY() * secondIntersection.getPoint().getY()
+                + secondIntersection.getPoint().getZ() * secondIntersection.getPoint().getZ();
+        if (firstSquareLength < secondSquareLength) {
+            return firstIntersection;
+        }
+        return secondIntersection;
     }
-    if (firstIntersection != null && secondIntersection == null) {
-      return firstIntersection;
-    }
-    if (firstIntersection == null && secondIntersection != null) {
-      return secondIntersection;
-    }
-    final double firstSquareLength = firstIntersection.getPoint().getX() * firstIntersection.getPoint().getX()
-        + firstIntersection.getPoint().getY() * firstIntersection.getPoint().getY() + firstIntersection.getPoint().getZ()
-        * firstIntersection.getPoint().getZ();
-    final double secondSquareLength = secondIntersection.getPoint().getX() * secondIntersection.getPoint().getX()
-        + secondIntersection.getPoint().getY() * secondIntersection.getPoint().getY() + secondIntersection.getPoint().getZ()
-        * secondIntersection.getPoint().getZ();
-    if (firstSquareLength < secondSquareLength) {
-      return firstIntersection;
-    }
-    return secondIntersection;
-  }
 
-  @Override
-  public Vector3D objectCoordinates(final Vector3D intersection) {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public Vector3D objectCoordinates(final Vector3D intersection) {
+        throw new UnsupportedOperationException();
+    }
 
-  @Override
-  public String toString() {
-    return String.format("{Union: %s, %s}", first, second);
-  }
+    @Override
+    public String toString() {
+        return String.format("{Union: %s, %s}", first, second);
+    }
 
 }

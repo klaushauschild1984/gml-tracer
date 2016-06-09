@@ -39,34 +39,33 @@ import de.hauschild.gmltracer.tracer.shape.SurfaceProperties;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class GmlSurfaceFunction implements SurfaceFunction {
 
-  private final FunctionToken surfaceFunction;
+    private final FunctionToken surfaceFunction;
 
-  public GmlSurfaceFunction(final FunctionToken theSurfaceFunction) {
-    surfaceFunction = theSurfaceFunction;
-  }
+    public GmlSurfaceFunction(final FunctionToken theSurfaceFunction) {
+        surfaceFunction = theSurfaceFunction;
+    }
 
-  @Override
-  public SurfaceProperties apply(final int face, final double u, final double v) {
-    // prepare function
-    final Stack<Token> tokenStack = new Stack<>();
-    final Map<String, Token> environment = Maps.newHashMap();
-    tokenStack.push(new NumberToken(face));
-    tokenStack.push(new NumberToken(u));
-    tokenStack.push(new NumberToken(v));
-    tokenStack.push(surfaceFunction);
-    // evaluate
-    new ApplyEvaluate().evaluate(tokenStack, environment);
-    // extract properties
-    final double phongExponent = ((NumberToken) tokenStack.pop()).getValue();
-    final double specularReflectionCoefficient = ((NumberToken) tokenStack.pop()).getValue();
-    final double diffuseReflectionCoefficient = ((NumberToken) tokenStack.pop()).getValue();
-    final Vector3D color = ((PointToken) tokenStack.pop()).getValue();
-    return new SurfaceProperties(color, diffuseReflectionCoefficient, specularReflectionCoefficient, phongExponent);
-  }
+    @Override
+    public SurfaceProperties apply(final int face, final double u, final double v) {
+        // prepare function
+        final Stack<Token> tokenStack = new Stack<>();
+        final Map<String, Token> environment = Maps.newHashMap();
+        tokenStack.push(new NumberToken(face));
+        tokenStack.push(new NumberToken(u));
+        tokenStack.push(new NumberToken(v));
+        tokenStack.push(surfaceFunction);
+        // evaluate
+        new ApplyEvaluate().evaluate(tokenStack, environment);
+        // extract properties
+        final double phongExponent = ((NumberToken) tokenStack.pop()).getValue();
+        final double specularReflectionCoefficient = ((NumberToken) tokenStack.pop()).getValue();
+        final double diffuseReflectionCoefficient = ((NumberToken) tokenStack.pop()).getValue();
+        final Vector3D color = ((PointToken) tokenStack.pop()).getValue();
+        return new SurfaceProperties(color, diffuseReflectionCoefficient, specularReflectionCoefficient, phongExponent);
+    }
 
 }

@@ -27,14 +27,13 @@ import de.hauschild.gmltracer.tracer.shape.tier1.Plane;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class PlaneEvaluate extends AbstractShapeEvaluate<Plane> {
 
-  @Override
-  protected Plane createShape(final GmlSurfaceFunction surfaceFunction) {
-    return new Plane(surfaceFunction);
-  }
+    @Override
+    protected Plane createShape(final GmlSurfaceFunction surfaceFunction) {
+        return new Plane(surfaceFunction);
+    }
 
 }

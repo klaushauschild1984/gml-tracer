@@ -32,19 +32,18 @@ import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class LessEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
 
-  @Override
-  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    if (firstToken.getValue() < secondToken.getValue()) {
-      tokenStack.push(BooleanToken.TRUE);
-    } else {
-      tokenStack.push(BooleanToken.FALSE);
+    @Override
+    protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+            final Map<String, Token> environment) {
+        if (firstToken.getValue() < secondToken.getValue()) {
+            tokenStack.push(BooleanToken.TRUE);
+        } else {
+            tokenStack.push(BooleanToken.FALSE);
+        }
     }
-  }
 
 }

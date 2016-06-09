@@ -29,14 +29,14 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 public abstract class AbstractDoubleEvaluate<FIRST extends Token, SECOND extends Token> implements Evaluate {
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final SECOND secondToken = (SECOND) tokenStack.pop();
-    final FIRST firstToken = (FIRST) tokenStack.pop();
-    evaluate(firstToken, secondToken, tokenStack, environment);
-  }
+    @Override
+    @SuppressWarnings("unchecked")
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final SECOND secondToken = (SECOND) tokenStack.pop();
+        final FIRST firstToken = (FIRST) tokenStack.pop();
+        evaluate(firstToken, secondToken, tokenStack, environment);
+    }
 
-  protected abstract void evaluate(FIRST firstToken, SECOND secondToken, Stack<Token> tokenStack, Map<String, Token> environment);
+    protected abstract void evaluate(FIRST firstToken, SECOND secondToken, Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

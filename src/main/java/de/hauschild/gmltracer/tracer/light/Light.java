@@ -29,13 +29,12 @@ import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public interface Light {
 
-  Vector3D illuminates(Vector3D color, Intersection intersection);
+    Vector3D illuminates(Vector3D color, Intersection intersection);
 
-  boolean isInShadow(Shape scene, Intersection intersection);
+    boolean isInShadow(Shape scene, Intersection intersection);
 
 }

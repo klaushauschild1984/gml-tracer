@@ -29,29 +29,28 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public abstract class AbstractValueToken<T> implements Token {
 
-  private final T value;
+    private final T value;
 
-  protected AbstractValueToken(final T theValue) {
-    value = theValue;
-  }
+    protected AbstractValueToken(final T theValue) {
+        value = theValue;
+    }
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    tokenStack.push(this);
-  }
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        tokenStack.push(this);
+    }
 
-  public T getValue() {
-    return value;
-  }
+    public T getValue() {
+        return value;
+    }
 
-  @Override
-  public String toString() {
-    return value.toString();
-  }
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 
 }

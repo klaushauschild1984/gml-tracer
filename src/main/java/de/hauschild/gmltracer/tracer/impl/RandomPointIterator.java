@@ -28,18 +28,17 @@ import java.util.List;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
-public class RandomPointIterator extends PointIterator {
+class RandomPointIterator extends PointIterator {
 
-  public RandomPointIterator(final int width, final int height) {
-    super(width, height);
-  }
+    RandomPointIterator(final int width, final int height) {
+        super(width, height);
+    }
 
-  @Override
-  protected void postProcess(final List<Point> points) {
-    Collections.shuffle(points);
-  }
+    @Override
+    protected void postProcess(final List<Point> points) {
+        Collections.shuffle(points);
+    }
 
 }

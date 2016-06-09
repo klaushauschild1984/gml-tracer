@@ -43,113 +43,112 @@ import de.hauschild.gmltracer.gml.token.evaluate.transformations.TranslateEvalua
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class OperatorToken implements Token {
 
-  private static enum Type {
+    private final Type type;
 
-    // control operators
-
-    IF(new IfEvaluate()), //
-    APPLY(new ApplyEvaluate()),
-
-    // number operators
-    ADDI(new UnsupportedEvaluate()), //
-    ADDF(new UnsupportedEvaluate()), //
-    ACOS(new UnsupportedEvaluate()), //
-    ASIN(new UnsupportedEvaluate()), //
-    CLAMPF(new UnsupportedEvaluate()), //
-    COS(new UnsupportedEvaluate()), //
-    DIVI(new UnsupportedEvaluate()), //
-    DIVF(new UnsupportedEvaluate()), //
-    EQI(new UnsupportedEvaluate()), //
-    EQF(new UnsupportedEvaluate()), //
-    FLOOR(new UnsupportedEvaluate()), //
-    FRAC(new UnsupportedEvaluate()), //
-    LESSI(new LessEvaluate()), //
-    LESSF(new LessEvaluate()), //
-    MODI(new UnsupportedEvaluate()), //
-    MULI(new MulEvaluate()), //
-    MULF(new MulEvaluate()), //
-    NEGI(new UnsupportedEvaluate()), //
-    NEGF(new UnsupportedEvaluate()), //
-    REAL(new UnsupportedEvaluate()), //
-    SIN(new UnsupportedEvaluate()), //
-    SQRT(new UnsupportedEvaluate()), //
-    SUBI(new SubEvaluate()), //
-    SUBF(new SubEvaluate()),
-
-    // point operators
-    GETX(new UnsupportedEvaluate()), //
-    GETY(new UnsupportedEvaluate()), //
-    GETZ(new UnsupportedEvaluate()), //
-    POINT(new PointEvaluate()),
-
-    // array operators
-    GET(new UnsupportedEvaluate()), //
-    LENGTH(new UnsupportedEvaluate()),
-
-    // geometric primitive operators
-    SPHERE(new SphereEvaluate()), //
-    CUBE(new UnsupportedEvaluate()), //
-    CYLINDER(new UnsupportedEvaluate()), //
-    CONE(new UnsupportedEvaluate()), //
-    PLANE(new PlaneEvaluate()),
-
-    // transformation operators
-    TRANSLATE(new TranslateEvaluate()), //
-    SCALE(new UnsupportedEvaluate()), //
-    USCALE(new UnsupportedEvaluate()), //
-    ROTATEX(new UnsupportedEvaluate()), //
-    ROTATEY(new UnsupportedEvaluate()), //
-    ROTATEZ(new UnsupportedEvaluate()),
-
-    // light operators
-    LIGHT(new DirectionalLightEvaluate()), //
-    POINTLIGHT(new UnsupportedEvaluate()), //
-    SPOTLIGHT(new UnsupportedEvaluate()),
-
-    // constructive solid geometry operators
-    UNION(new UnionEvaluate()), //
-    INTERSECT(new UnsupportedEvaluate()), //
-    DIFFERENCE(new UnsupportedEvaluate()),
-
-    // rendering operator
-    RENDER(new RenderEvaluate()),
-
-    ;
-
-    private final Evaluate evaluate;
-
-    private Type(final Evaluate theEvaluate) {
-      evaluate = theEvaluate;
+    public OperatorToken(final String operator) {
+        type = Type.valueOf(operator.toUpperCase());
     }
 
+    @Override
     public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-      if (evaluate instanceof UnsupportedEvaluate) {
-        throw new UnsupportedOperationException(String.format("[%s] not implemented!", this));
-      }
-      evaluate.evaluate(tokenStack, environment);
+        type.evaluate(tokenStack, environment);
     }
 
-  }
+    @Override
+    public String toString() {
+        return type.name().toLowerCase();
+    }
 
-  private final Type type;
+    private enum Type {
 
-  public OperatorToken(final String operator) {
-    type = Type.valueOf(operator.toUpperCase());
-  }
+        // control operators
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    type.evaluate(tokenStack, environment);
-  }
+        IF(new IfEvaluate()), //
+        APPLY(new ApplyEvaluate()),
 
-  @Override
-  public String toString() {
-    return type.name().toLowerCase();
-  }
+        // number operators
+        ADDI(new UnsupportedEvaluate()), //
+        ADDF(new UnsupportedEvaluate()), //
+        ACOS(new UnsupportedEvaluate()), //
+        ASIN(new UnsupportedEvaluate()), //
+        CLAMPF(new UnsupportedEvaluate()), //
+        COS(new UnsupportedEvaluate()), //
+        DIVI(new UnsupportedEvaluate()), //
+        DIVF(new UnsupportedEvaluate()), //
+        EQI(new UnsupportedEvaluate()), //
+        EQF(new UnsupportedEvaluate()), //
+        FLOOR(new UnsupportedEvaluate()), //
+        FRAC(new UnsupportedEvaluate()), //
+        LESSI(new LessEvaluate()), //
+        LESSF(new LessEvaluate()), //
+        MODI(new UnsupportedEvaluate()), //
+        MULI(new MulEvaluate()), //
+        MULF(new MulEvaluate()), //
+        NEGI(new UnsupportedEvaluate()), //
+        NEGF(new UnsupportedEvaluate()), //
+        REAL(new UnsupportedEvaluate()), //
+        SIN(new UnsupportedEvaluate()), //
+        SQRT(new UnsupportedEvaluate()), //
+        SUBI(new SubEvaluate()), //
+        SUBF(new SubEvaluate()),
+
+        // point operators
+        GETX(new UnsupportedEvaluate()), //
+        GETY(new UnsupportedEvaluate()), //
+        GETZ(new UnsupportedEvaluate()), //
+        POINT(new PointEvaluate()),
+
+        // array operators
+        GET(new UnsupportedEvaluate()), //
+        LENGTH(new UnsupportedEvaluate()),
+
+        // geometric primitive operators
+        SPHERE(new SphereEvaluate()), //
+        CUBE(new UnsupportedEvaluate()), //
+        CYLINDER(new UnsupportedEvaluate()), //
+        CONE(new UnsupportedEvaluate()), //
+        PLANE(new PlaneEvaluate()),
+
+        // transformation operators
+        TRANSLATE(new TranslateEvaluate()), //
+        SCALE(new UnsupportedEvaluate()), //
+        USCALE(new UnsupportedEvaluate()), //
+        ROTATEX(new UnsupportedEvaluate()), //
+        ROTATEY(new UnsupportedEvaluate()), //
+        ROTATEZ(new UnsupportedEvaluate()),
+
+        // light operators
+        LIGHT(new DirectionalLightEvaluate()), //
+        POINTLIGHT(new UnsupportedEvaluate()), //
+        SPOTLIGHT(new UnsupportedEvaluate()),
+
+        // constructive solid geometry operators
+        UNION(new UnionEvaluate()), //
+        INTERSECT(new UnsupportedEvaluate()), //
+        DIFFERENCE(new UnsupportedEvaluate()),
+
+        // rendering operator
+        RENDER(new RenderEvaluate()),
+
+        ;
+
+        private final Evaluate evaluate;
+
+        Type(final Evaluate theEvaluate) {
+            evaluate = theEvaluate;
+        }
+
+        public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+            if (evaluate instanceof UnsupportedEvaluate) {
+                throw new UnsupportedOperationException(String.format("[%s] not implemented!", this));
+            }
+            evaluate.evaluate(tokenStack, environment);
+        }
+
+    }
 
 }

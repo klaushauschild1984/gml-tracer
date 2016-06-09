@@ -29,13 +29,13 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 public abstract class AbstractSingleEvaluate<T extends Token> implements Evaluate {
 
-  @Override
-  @SuppressWarnings("unchecked")
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final T token = (T) tokenStack.pop();
-    evaluate(token, tokenStack, environment);
-  }
+    @Override
+    @SuppressWarnings("unchecked")
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final T token = (T) tokenStack.pop();
+        evaluate(token, tokenStack, environment);
+    }
 
-  protected abstract void evaluate(T token, Stack<Token> tokenStack, Map<String, Token> environment);
+    protected abstract void evaluate(T token, Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

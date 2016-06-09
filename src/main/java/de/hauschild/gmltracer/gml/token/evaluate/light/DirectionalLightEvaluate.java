@@ -33,17 +33,16 @@ import de.hauschild.gmltracer.tracer.light.tier1.DirectionalLight;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class DirectionalLightEvaluate extends AbstractDoubleEvaluate<PointToken, PointToken> {
 
-  @Override
-  protected void evaluate(final PointToken directionToken, final PointToken colorToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    final DirectionalLight directionalLight = new DirectionalLight(directionToken.getValue(), colorToken.getValue());
-    final LightToken lightToken = new LightToken(directionalLight);
-    tokenStack.push(lightToken);
-  }
+    @Override
+    protected void evaluate(final PointToken directionToken, final PointToken colorToken, final Stack<Token> tokenStack,
+            final Map<String, Token> environment) {
+        final DirectionalLight directionalLight = new DirectionalLight(directionToken.getValue(), colorToken.getValue());
+        final LightToken lightToken = new LightToken(directionalLight);
+        tokenStack.push(lightToken);
+    }
 
 }

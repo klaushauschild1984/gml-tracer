@@ -37,27 +37,26 @@ import de.hauschild.gmltracer.gml.GMLParser;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
-public class GmlTracer {
+class GmlTracer {
 
-  public static void main(final String[] args) throws Exception {
-    final FileInputStream fileInputStream = new FileInputStream(args[0]);
-    final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(fileInputStream));
-    final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
-    gmlParser.addErrorListener(new BaseErrorListener() {
+    public static void main(final String[] args) throws Exception {
+        final FileInputStream fileInputStream = new FileInputStream(args[0]);
+        final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(fileInputStream));
+        final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
+        gmlParser.addErrorListener(new BaseErrorListener() {
 
-      @Override
-      public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol, final int line,
-          final int charPositionInLine, final String message, final RecognitionException exception) {
-        throw new RuntimeException(message);
-      }
+            @Override
+            public void syntaxError(final Recognizer<?, ?> recognizer, final Object offendingSymbol, final int line,
+                    final int charPositionInLine, final String message, final RecognitionException exception) {
+                throw new RuntimeException(message);
+            }
 
-    });
-    final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
-    final GMLInterpreter gmlInterpreter = new GMLInterpreter(gmlExtractor);
-    gmlInterpreter.interpret();
-  }
+        });
+        final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
+        final GMLInterpreter gmlInterpreter = new GMLInterpreter(gmlExtractor);
+        gmlInterpreter.interpret();
+    }
 
 }

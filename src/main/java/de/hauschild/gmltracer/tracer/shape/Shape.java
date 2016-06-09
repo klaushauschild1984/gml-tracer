@@ -27,15 +27,14 @@ import de.hauschild.gmltracer.tracer.impl.Ray;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public interface Shape {
 
-  Intersection intersect(Ray ray);
+    Intersection intersect(Ray ray);
 
-  Intersection intersect(Ray shadowRay, Shape shape);
+    Intersection intersect(Ray shadowRay, Shape shape);
 
-  void translate(double x, double y, double z);
+    void translate(double x, double y, double z);
 
 }

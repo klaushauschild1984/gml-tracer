@@ -28,13 +28,12 @@ import de.hauschild.gmltracer.gml.token.base.AbstractValueToken;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class PointToken extends AbstractValueToken<Vector3D> {
 
-  public PointToken(final double x, final double y, final double z) {
-    super(new Vector3D(x, y, z));
-  }
+    public PointToken(final double x, final double y, final double z) {
+        super(new Vector3D(x, y, z));
+    }
 
 }

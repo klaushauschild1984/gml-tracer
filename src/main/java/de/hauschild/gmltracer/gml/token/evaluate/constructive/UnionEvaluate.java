@@ -32,17 +32,16 @@ import de.hauschild.gmltracer.tracer.shape.tier1.Union;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class UnionEvaluate extends AbstractDoubleEvaluate<ShapeToken, ShapeToken> {
 
-  @Override
-  protected void evaluate(final ShapeToken firstToken, final ShapeToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    final Union union = new Union(firstToken.getValue(), secondToken.getValue());
-    final ShapeToken unionToken = new ShapeToken(union);
-    tokenStack.push(unionToken);
-  }
+    @Override
+    protected void evaluate(final ShapeToken firstToken, final ShapeToken secondToken, final Stack<Token> tokenStack,
+            final Map<String, Token> environment) {
+        final Union union = new Union(firstToken.getValue(), secondToken.getValue());
+        final ShapeToken unionToken = new ShapeToken(union);
+        tokenStack.push(unionToken);
+    }
 
 }

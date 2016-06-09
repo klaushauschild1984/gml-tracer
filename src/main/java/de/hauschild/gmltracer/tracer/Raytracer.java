@@ -31,12 +31,11 @@ import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public interface Raytracer {
 
-  void render(Vector3D ambientLightIntensity, List<Light> lights, Shape scene, int depth, double fieldOfView, int width, int height,
-      String fileName);
+    void render(Vector3D ambientLightIntensity, List<Light> lights, Shape scene, int depth, double fieldOfView, int width,
+            int height, String fileName);
 
 }

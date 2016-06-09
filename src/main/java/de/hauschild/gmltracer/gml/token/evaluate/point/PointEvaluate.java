@@ -32,18 +32,17 @@ import de.hauschild.gmltracer.gml.token.geometry.PointToken;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class PointEvaluate implements Evaluate {
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final NumberToken z = (NumberToken) tokenStack.pop();
-    final NumberToken y = (NumberToken) tokenStack.pop();
-    final NumberToken x = (NumberToken) tokenStack.pop();
-    final PointToken pointToken = new PointToken(x.getValue(), y.getValue(), z.getValue());
-    tokenStack.push(pointToken);
-  }
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final NumberToken z = (NumberToken) tokenStack.pop();
+        final NumberToken y = (NumberToken) tokenStack.pop();
+        final NumberToken x = (NumberToken) tokenStack.pop();
+        final PointToken pointToken = new PointToken(x.getValue(), y.getValue(), z.getValue());
+        tokenStack.push(pointToken);
+    }
 
 }

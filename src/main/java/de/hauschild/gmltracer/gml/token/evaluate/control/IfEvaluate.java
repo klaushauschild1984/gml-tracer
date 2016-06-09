@@ -32,22 +32,21 @@ import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class IfEvaluate implements Evaluate {
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final FunctionToken elseFunction = (FunctionToken) tokenStack.pop();
-    final FunctionToken ifFunction = (FunctionToken) tokenStack.pop();
-    final BooleanToken condition = (BooleanToken) tokenStack.pop();
-    if (condition.getValue()) {
-      ifFunction.evaluate(tokenStack, environment);
-    } else {
-      elseFunction.evaluate(tokenStack, environment);
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final FunctionToken elseFunction = (FunctionToken) tokenStack.pop();
+        final FunctionToken ifFunction = (FunctionToken) tokenStack.pop();
+        final BooleanToken condition = (BooleanToken) tokenStack.pop();
+        if (condition.getValue()) {
+            ifFunction.evaluate(tokenStack, environment);
+        } else {
+            elseFunction.evaluate(tokenStack, environment);
+        }
+        new ApplyEvaluate().evaluate(tokenStack, environment);
     }
-    new ApplyEvaluate().evaluate(tokenStack, environment);
-  }
 
 }

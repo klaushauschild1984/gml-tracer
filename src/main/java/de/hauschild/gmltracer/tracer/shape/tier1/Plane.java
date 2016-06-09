@@ -31,30 +31,29 @@ import de.hauschild.gmltracer.tracer.shape.SurfaceFunction;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class Plane extends AbstractShape {
 
-  public Plane(final SurfaceFunction surfaceFunction) {
-    super(surfaceFunction);
-  }
+    public Plane(final SurfaceFunction surfaceFunction) {
+        super(surfaceFunction);
+    }
 
-  @Override
-  public Vector3D objectCoordinates(final Vector3D intersection) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    public Vector3D objectCoordinates(final Vector3D intersection) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  @Override
-  public String toString() {
-    return String.format("{Plane}");
-  }
+    @Override
+    public String toString() {
+        return "{Plane}";
+    }
 
-  @Override
-  protected Intersection intersectAfterIgnore(final Ray ray) {
-    // TODO Auto-generated method stub
-    return null;
-  }
+    @Override
+    protected Intersection intersectAfterIgnore(final Ray ray) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

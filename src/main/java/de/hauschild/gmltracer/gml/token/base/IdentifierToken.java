@@ -29,22 +29,21 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class IdentifierToken extends AbstractValueToken<String> {
 
-  public IdentifierToken(final String identifier) {
-    super(identifier);
-  }
-
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    Token token = environment.get(getValue());
-    if (token instanceof FunctionToken) {
-      token = new FunctionToken((FunctionToken) token);
+    public IdentifierToken(final String identifier) {
+        super(identifier);
     }
-    tokenStack.push(token);
-  }
+
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        Token token = environment.get(getValue());
+        if (token instanceof FunctionToken) {
+            token = new FunctionToken((FunctionToken) token);
+        }
+        tokenStack.push(token);
+    }
 
 }

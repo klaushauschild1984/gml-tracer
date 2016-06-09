@@ -26,38 +26,37 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class SurfaceProperties {
 
-  private final Vector3D color;
-  private final double diffuseReflectionCoefficient;
-  private final double specularReflectionCoefficient;
-  private final double phongExponent;
+    private final Vector3D color;
+    private final double   diffuseReflectionCoefficient;
+    private final double   specularReflectionCoefficient;
+    private final double   phongExponent;
 
-  public SurfaceProperties(final Vector3D theColor, final double theDiffuseReflectionCoefficient,
-      final double theSpecularReflectionCoefficient, final double thePhongExponent) {
-    color = theColor;
-    diffuseReflectionCoefficient = theDiffuseReflectionCoefficient;
-    specularReflectionCoefficient = theSpecularReflectionCoefficient;
-    phongExponent = thePhongExponent;
-  }
+    public SurfaceProperties(final Vector3D theColor, final double theDiffuseReflectionCoefficient,
+            final double theSpecularReflectionCoefficient, final double thePhongExponent) {
+        color = theColor;
+        diffuseReflectionCoefficient = theDiffuseReflectionCoefficient;
+        specularReflectionCoefficient = theSpecularReflectionCoefficient;
+        phongExponent = thePhongExponent;
+    }
 
-  public Vector3D getColor() {
-    return color;
-  }
+    public Vector3D getColor() {
+        return color;
+    }
 
-  public double getDiffuseReflectionCoefficient() {
-    return diffuseReflectionCoefficient;
-  }
+    public double getDiffuseReflectionCoefficient() {
+        return diffuseReflectionCoefficient;
+    }
 
-  public double getPhongExponent() {
-    return phongExponent;
-  }
+    public double getPhongExponent() {
+        return phongExponent;
+    }
 
-  public double getSpecularReflectionCoefficient() {
-    return specularReflectionCoefficient;
-  }
+    public double getSpecularReflectionCoefficient() {
+        return specularReflectionCoefficient;
+    }
 
 }

@@ -27,8 +27,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
-
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Lists;
 
@@ -50,116 +48,117 @@ import de.hauschild.gmltracer.gml.token.base.IdentifierToken;
 import de.hauschild.gmltracer.gml.token.base.NumberToken;
 import de.hauschild.gmltracer.gml.token.base.OperatorToken;
 import de.hauschild.gmltracer.gml.token.base.StringToken;
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class GMLExtractor {
 
-  private static final Logger PARSER_LOGGER = LoggerFactory.getLogger(GMLParser.class);
-  private static final Logger EXTRACTOR_LOGGER = LoggerFactory.getLogger(GMLExtractor.class);
+    private static final Logger PARSER_LOGGER    = LoggerFactory.getLogger(GMLParser.class);
+    private static final Logger EXTRACTOR_LOGGER = LoggerFactory.getLogger(GMLExtractor.class);
 
-  private final Stopwatch stopwatch = Stopwatch.createUnstarted();
-  private final GMLParser gmlParser;
+    private final Stopwatch     stopwatch        = Stopwatch.createUnstarted();
+    private final GMLParser     gmlParser;
 
-  public GMLExtractor(final GMLParser theGmlParser) {
-    gmlParser = theGmlParser;
-  }
+    public GMLExtractor(final GMLParser theGmlParser) {
+        gmlParser = theGmlParser;
+    }
 
-  public List<Token> extract() {
-    PARSER_LOGGER.info("begin parsing...");
-    SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
-    stopwatch.start();
-    final TokenListContext tokenList = gmlParser.tokenList();
-    stopwatch.stop();
-    PARSER_LOGGER.info("parsing took {}", stopwatch);
-    EXTRACTOR_LOGGER.info("begin extraction...");
-    stopwatch.reset();
-    stopwatch.start();
-    final List<Token> extractedTokens = new GMLBaseVisitor<List<Token>>() {
+    public List<Token> extract() {
+        PARSER_LOGGER.info("begin parsing...");
+        SysOutOverSLF4J.sendSystemOutAndErrToSLF4J();
+        stopwatch.start();
+        final TokenListContext tokenList = gmlParser.tokenList();
+        stopwatch.stop();
+        PARSER_LOGGER.info("parsing took {}", stopwatch);
+        EXTRACTOR_LOGGER.info("begin extraction...");
+        stopwatch.reset();
+        stopwatch.start();
+        final List<Token> extractedTokens = new GMLBaseVisitor<List<Token>>() {
 
-      @Override
-      public List<Token> visitArray(final ArrayContext ctx) {
-        final List<Token> arrayContent = visitChildren(ctx);
-        final ArrayToken arrayToken = new ArrayToken(arrayContent);
-        final List<Token> result = defaultResult();
-        result.add(arrayToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitArray(final ArrayContext ctx) {
+                final List<Token> arrayContent = visitChildren(ctx);
+                final ArrayToken arrayToken = new ArrayToken(arrayContent);
+                final List<Token> result = defaultResult();
+                result.add(arrayToken);
+                return result;
+            }
 
-      @Override
-      public List<Token> visitBinder(final BinderContext ctx) {
-        final List<Token> result = defaultResult();
-        final BinderToken binderToken = new BinderToken(ctx.getText().substring(1));
-        result.add(binderToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitBinder(final BinderContext ctx) {
+                final List<Token> result = defaultResult();
+                final BinderToken binderToken = new BinderToken(ctx.getText().substring(1));
+                result.add(binderToken);
+                return result;
+            }
 
-      @Override
-      public List<Token> visitBool(final BoolContext ctx) {
-        final List<Token> result = defaultResult();
-        final BooleanToken booleanToken = new BooleanToken(ctx.getText());
-        result.add(booleanToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitBool(final BoolContext ctx) {
+                final List<Token> result = defaultResult();
+                final BooleanToken booleanToken = new BooleanToken(ctx.getText());
+                result.add(booleanToken);
+                return result;
+            }
 
-      @Override
-      public List<Token> visitFunction(final FunctionContext ctx) {
-        final List<Token> functionContent = visitChildren(ctx);
-        final FunctionToken functionToken = new FunctionToken(functionContent);
-        final List<Token> result = defaultResult();
-        result.add(functionToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitFunction(final FunctionContext ctx) {
+                final List<Token> functionContent = visitChildren(ctx);
+                final FunctionToken functionToken = new FunctionToken(functionContent);
+                final List<Token> result = defaultResult();
+                result.add(functionToken);
+                return result;
+            }
 
-      @Override
-      public List<Token> visitIdentifier(final IdentifierContext ctx) {
-        final List<Token> result = defaultResult();
-        final IdentifierToken identifierToken = new IdentifierToken(ctx.getText());
-        result.add(identifierToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitIdentifier(final IdentifierContext ctx) {
+                final List<Token> result = defaultResult();
+                final IdentifierToken identifierToken = new IdentifierToken(ctx.getText());
+                result.add(identifierToken);
+                return result;
+            }
 
-      @Override
-      public List<Token> visitNumber(final NumberContext ctx) {
-        final List<Token> result = defaultResult();
-        final NumberToken numberToken = new NumberToken(ctx.getText());
-        result.add(numberToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitNumber(final NumberContext ctx) {
+                final List<Token> result = defaultResult();
+                final NumberToken numberToken = new NumberToken(ctx.getText());
+                result.add(numberToken);
+                return result;
+            }
 
-      @Override
-      public List<Token> visitOperator(final OperatorContext ctx) {
-        final List<Token> result = defaultResult();
-        final OperatorToken operatorToken = new OperatorToken(ctx.getText());
-        result.add(operatorToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitOperator(final OperatorContext ctx) {
+                final List<Token> result = defaultResult();
+                final OperatorToken operatorToken = new OperatorToken(ctx.getText());
+                result.add(operatorToken);
+                return result;
+            }
 
-      @Override
-      public List<Token> visitString(final StringContext ctx) {
-        final List<Token> result = defaultResult();
-        final StringToken stringToken = new StringToken(ctx.getText().substring(1, ctx.getText().length() - 1));
-        result.add(stringToken);
-        return result;
-      };
+            @Override
+            public List<Token> visitString(final StringContext ctx) {
+                final List<Token> result = defaultResult();
+                final StringToken stringToken = new StringToken(ctx.getText().substring(1, ctx.getText().length() - 1));
+                result.add(stringToken);
+                return result;
+            }
 
-      @Override
-      protected List<Token> aggregateResult(final List<Token> aggregate, final List<Token> nextResult) {
-        aggregate.addAll(nextResult);
-        return aggregate;
-      };
+            @Override
+            protected List<Token> aggregateResult(final List<Token> aggregate, final List<Token> nextResult) {
+                aggregate.addAll(nextResult);
+                return aggregate;
+            }
 
-      @Override
-      protected List<Token> defaultResult() {
-        return Lists.newArrayList();
-      };
+            @Override
+            protected List<Token> defaultResult() {
+                return Lists.newArrayList();
+            }
 
-    }.visit(tokenList);
-    stopwatch.stop();
-    EXTRACTOR_LOGGER.info("extraction took {}", stopwatch);
-    return extractedTokens;
-  }
+        }.visit(tokenList);
+        stopwatch.stop();
+        EXTRACTOR_LOGGER.info("extraction took {}", stopwatch);
+        return extractedTokens;
+    }
+
 }

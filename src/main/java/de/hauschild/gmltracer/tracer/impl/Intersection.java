@@ -29,37 +29,37 @@ import de.hauschild.gmltracer.tracer.shape.SurfaceProperties;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class Intersection {
 
-  private final Vector3D point;
-  private final Shape shape;
-  private final Vector3D normal;
-  private final SurfaceProperties surfaceProperties;
+    private final Vector3D          point;
+    private final Shape             shape;
+    private final Vector3D          normal;
+    private final SurfaceProperties surfaceProperties;
 
-  public Intersection(final Vector3D thePoint, final Shape theShape, final Vector3D theNormal, final SurfaceProperties theSurfaceProperties) {
-    point = thePoint;
-    shape = theShape;
-    normal = theNormal;
-    surfaceProperties = theSurfaceProperties;
-  }
+    public Intersection(final Vector3D thePoint, final Shape theShape, final Vector3D theNormal,
+            final SurfaceProperties theSurfaceProperties) {
+        point = thePoint;
+        shape = theShape;
+        normal = theNormal;
+        surfaceProperties = theSurfaceProperties;
+    }
 
-  public Vector3D getNormal() {
-    return normal;
-  }
+    public Vector3D getNormal() {
+        return normal;
+    }
 
-  public Vector3D getPoint() {
-    return point;
-  }
+    public Vector3D getPoint() {
+        return point;
+    }
 
-  public Shape getShape() {
-    return shape;
-  }
+    public Shape getShape() {
+        return shape;
+    }
 
-  public SurfaceProperties getSurfaceProperties() {
-    return surfaceProperties;
-  }
+    public SurfaceProperties getSurfaceProperties() {
+        return surfaceProperties;
+    }
 
 }

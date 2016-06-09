@@ -31,16 +31,15 @@ import de.hauschild.gmltracer.gml.token.evaluate.AbstractDoubleEvaluate;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class SubEvaluate extends AbstractDoubleEvaluate<NumberToken, NumberToken> {
 
-  @Override
-  protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
-      final Map<String, Token> environment) {
-    final double result = firstToken.getValue() - secondToken.getValue();
-    tokenStack.push(new NumberToken(result));
-  }
+    @Override
+    protected void evaluate(final NumberToken firstToken, final NumberToken secondToken, final Stack<Token> tokenStack,
+            final Map<String, Token> environment) {
+        final double result = firstToken.getValue() - secondToken.getValue();
+        tokenStack.push(new NumberToken(result));
+    }
 
 }

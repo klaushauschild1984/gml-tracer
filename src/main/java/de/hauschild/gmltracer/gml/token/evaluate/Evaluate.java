@@ -29,6 +29,6 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 public interface Evaluate {
 
-  void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
+    void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

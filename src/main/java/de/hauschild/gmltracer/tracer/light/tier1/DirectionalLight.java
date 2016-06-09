@@ -32,36 +32,35 @@ import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class DirectionalLight extends AbstractLight {
 
-  private final Vector3D direction;
-  private final Vector3D color;
+    private final Vector3D direction;
+    private final Vector3D color;
 
-  public DirectionalLight(final Vector3D theDirection, final Vector3D theColor) {
-    direction = theDirection;
-    color = theColor;
-  }
+    public DirectionalLight(final Vector3D theDirection, final Vector3D theColor) {
+        direction = theDirection;
+        color = theColor;
+    }
 
-  @Override
-  public Vector3D illuminates(final Vector3D surfaceColor, final Intersection intersection) {
-    final double dotProduct = Vector3D.dotProduct(intersection.getNormal(), direction.negate());
-    final double lightIntensity = Math.max(0.0, dotProduct);
-    return Vector3DUtils.multiplyComponentwise(surfaceColor, color).scalarMultiply(lightIntensity);
-  }
+    @Override
+    public Vector3D illuminates(final Vector3D surfaceColor, final Intersection intersection) {
+        final double dotProduct = Vector3D.dotProduct(intersection.getNormal(), direction.negate());
+        final double lightIntensity = Math.max(0.0, dotProduct);
+        return Vector3DUtils.multiplyComponentwise(surfaceColor, color).scalarMultiply(lightIntensity);
+    }
 
-  @Override
-  public boolean isInShadow(final Shape scene, final Intersection intersection) {
-    final Ray shadowRay = new Ray(intersection.getPoint(), intersection.getPoint().add(direction.negate()));
-    final Intersection shadowIntersection = scene.intersect(shadowRay, intersection.getShape());
-    return shadowIntersection != null;
-  }
+    @Override
+    public boolean isInShadow(final Shape scene, final Intersection intersection) {
+        final Ray shadowRay = new Ray(intersection.getPoint(), intersection.getPoint().add(direction.negate()));
+        final Intersection shadowIntersection = scene.intersect(shadowRay, intersection.getShape());
+        return shadowIntersection != null;
+    }
 
-  @Override
-  public String toString() {
-    return String.format("{Light, direction: %s; color: %s}", direction, color);
-  }
+    @Override
+    public String toString() {
+        return String.format("{Light, direction: %s; color: %s}", direction, color);
+    }
 
 }

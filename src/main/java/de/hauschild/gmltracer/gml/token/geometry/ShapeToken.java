@@ -27,13 +27,12 @@ import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class ShapeToken extends AbstractValueToken<Shape> {
 
-  public ShapeToken(final Shape shape) {
-    super(shape);
-  }
+    public ShapeToken(final Shape shape) {
+        super(shape);
+    }
 
 }

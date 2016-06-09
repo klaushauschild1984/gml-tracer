@@ -32,45 +32,44 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class FunctionToken extends AbstractContainerToken implements Cloneable {
 
-  private Map<String, Token> environment;
+    private Map<String, Token> environment;
 
-  public FunctionToken(final FunctionToken functionToken) {
-    super(functionToken.getValue());
-    environment = Maps.newHashMap(functionToken.getEnvironment());
-  }
+    public FunctionToken(final FunctionToken functionToken) {
+        super(functionToken.getValue());
+        environment = Maps.newHashMap(functionToken.getEnvironment());
+    }
 
-  public FunctionToken(final List<Token> theTokens) {
-    super(theTokens);
-  }
+    public FunctionToken(final List<Token> theTokens) {
+        super(theTokens);
+    }
 
-  @Override
-  public void evaluate(final Stack<Token> theTokenStack, final Map<String, Token> theEnvironment) {
-    super.evaluate(theTokenStack, theEnvironment);
-    environment = Maps.newHashMap(theEnvironment);
-  }
+    @Override
+    public void evaluate(final Stack<Token> theTokenStack, final Map<String, Token> theEnvironment) {
+        super.evaluate(theTokenStack, theEnvironment);
+        environment = Maps.newHashMap(theEnvironment);
+    }
 
-  public Map<String, Token> getEnvironment() {
-    return environment;
-  }
+    public Map<String, Token> getEnvironment() {
+        return environment;
+    }
 
-  @Override
-  protected String toStringBegin() {
-    return "{";
-  }
+    @Override
+    protected String toStringBegin() {
+        return "{";
+    }
 
-  @Override
-  protected String toStringEnd() {
-    return "}";
-  }
+    @Override
+    protected String toStringEnd() {
+        return "}";
+    }
 
-  @Override
-  protected String toStringSeparator() {
-    return " ";
-  }
+    @Override
+    protected String toStringSeparator() {
+        return " ";
+    }
 
 }

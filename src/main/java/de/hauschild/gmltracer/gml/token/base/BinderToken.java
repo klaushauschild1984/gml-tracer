@@ -29,24 +29,23 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class BinderToken extends AbstractValueToken<String> {
 
-  public BinderToken(final String binder) {
-    super(binder);
-  }
+    public BinderToken(final String binder) {
+        super(binder);
+    }
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final Token token = tokenStack.pop();
-    environment.put(getValue(), token);
-  }
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final Token token = tokenStack.pop();
+        environment.put(getValue(), token);
+    }
 
-  @Override
-  public String toString() {
-    return String.format("/%s", getValue());
-  }
+    @Override
+    public String toString() {
+        return String.format("/%s", getValue());
+    }
 
 }

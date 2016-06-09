@@ -40,52 +40,36 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class GMLExtractorTest {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GMLExtractorTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GMLExtractorTest.class);
 
-  @DataProvider
-  public Object[][] dataProvider() {
-    return new Object[][]{
-        {
-            "fact.gml",
-            6,
-        },
-        {
-            "test.gml",
-            9,
-        },
-        {
-            "three-spheres.gml",
-            63,
-        },
-        {
-            "checked-cube.gml",
-            14,
-        },
+    @DataProvider
+    public Object[][] dataProvider() {
+        return new Object[][] { { "fact.gml", 6, }, { "test.gml", 9, }, { "three-spheres.gml", 63, },
+                { "checked-cube.gml", 14, },
 
-    };
-  }
+        };
+    }
 
-  @Test(dataProvider = "dataProvider")
-  public void gmlExtractorTest(final String fileName, final int expectedTokenCount) throws IOException {
-    final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(getClass().getResourceAsStream(fileName)));
-    final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
-    gmlParser.addErrorListener(new BaseErrorListener() {
+    @Test(dataProvider = "dataProvider")
+    public void gmlExtractorTest(final String fileName, final int expectedTokenCount) throws IOException {
+        final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(getClass().getResourceAsStream(fileName)));
+        final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
+        gmlParser.addErrorListener(new BaseErrorListener() {
 
-      @Override
-      public void syntaxError(final Recognizer<?, ?> theRecognizer, final Object theOffendingSymbol, final int theLine,
-          final int theCharPositionInLine, final String theMsg, final RecognitionException theE) {
-        Assert.fail(theMsg);
-      }
+            @Override
+            public void syntaxError(final Recognizer<?, ?> theRecognizer, final Object theOffendingSymbol, final int theLine,
+                    final int theCharPositionInLine, final String theMsg, final RecognitionException theE) {
+                Assert.fail(theMsg);
+            }
 
-    });
-    final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
-    final List<Token> tokens = gmlExtractor.extract();
-    LOGGER.info(tokens.toString());
-    Assert.assertEquals(tokens.size(), expectedTokenCount);
-  }
+        });
+        final GMLExtractor gmlExtractor = new GMLExtractor(gmlParser);
+        final List<Token> tokens = gmlExtractor.extract();
+        LOGGER.info(tokens.toString());
+        Assert.assertEquals(tokens.size(), expectedTokenCount);
+    }
 }

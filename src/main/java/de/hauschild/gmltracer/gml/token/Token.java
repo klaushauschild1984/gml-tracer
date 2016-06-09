@@ -27,11 +27,10 @@ import java.util.Stack;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public interface Token {
 
-  void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
+    void evaluate(Stack<Token> tokenStack, Map<String, Token> environment);
 
 }

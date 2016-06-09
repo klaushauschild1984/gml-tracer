@@ -41,30 +41,30 @@ import de.hauschild.gmltracer.tracer.light.Light;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class RenderEvaluate implements Evaluate {
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final StringToken fileName = (StringToken) tokenStack.pop();
-    final NumberToken height = (NumberToken) tokenStack.pop();
-    final NumberToken width = (NumberToken) tokenStack.pop();
-    final NumberToken fieldOfView = (NumberToken) tokenStack.pop();
-    final NumberToken depth = (NumberToken) tokenStack.pop();
-    final ShapeToken scene = (ShapeToken) tokenStack.pop();
-    final ArrayToken lightArray = (ArrayToken) tokenStack.pop();
-    final List<Light> lights = Lists.newArrayList();
-    for (final Token light : lightArray.getValue()) {
-      if (!(light instanceof LightToken)) {
-        throw new ClassCastException(String.format("[%s] is [%s] expected was [%s]", light, light.getClass(), LightToken.class));
-      }
-      lights.add(((LightToken) light).getValue());
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final StringToken fileName = (StringToken) tokenStack.pop();
+        final NumberToken height = (NumberToken) tokenStack.pop();
+        final NumberToken width = (NumberToken) tokenStack.pop();
+        final NumberToken fieldOfView = (NumberToken) tokenStack.pop();
+        final NumberToken depth = (NumberToken) tokenStack.pop();
+        final ShapeToken scene = (ShapeToken) tokenStack.pop();
+        final ArrayToken lightArray = (ArrayToken) tokenStack.pop();
+        final List<Light> lights = Lists.newArrayList();
+        for (final Token light : lightArray.getValue()) {
+            if (!(light instanceof LightToken)) {
+                throw new ClassCastException(String.format("[%s] is [%s] expected was [%s]", light, light.getClass(),
+                        LightToken.class));
+            }
+            lights.add(((LightToken) light).getValue());
+        }
+        final PointToken ambientLightIntensity = (PointToken) tokenStack.pop();
+        new GmlRaytracer().render(ambientLightIntensity.getValue(), lights, scene.getValue(), depth.getValue().intValue(),
+                fieldOfView.getValue(), width.getValue().intValue(), height.getValue().intValue(), fileName.getValue());
     }
-    final PointToken ambientLightIntensity = (PointToken) tokenStack.pop();
-    new GmlRaytracer().render(ambientLightIntensity.getValue(), lights, scene.getValue(), depth.getValue().intValue(),
-        fieldOfView.getValue(), width.getValue().intValue(), height.getValue().intValue(), fileName.getValue());
-  }
 
 }

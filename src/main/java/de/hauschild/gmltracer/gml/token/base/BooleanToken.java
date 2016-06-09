@@ -24,16 +24,15 @@ package de.hauschild.gmltracer.gml.token.base;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class BooleanToken extends AbstractValueToken<Boolean> {
 
-  public static final BooleanToken TRUE = new BooleanToken(Boolean.TRUE.toString());
-  public static final BooleanToken FALSE = new BooleanToken(Boolean.FALSE.toString());
+    public static final BooleanToken TRUE  = new BooleanToken(Boolean.TRUE.toString());
+    public static final BooleanToken FALSE = new BooleanToken(Boolean.FALSE.toString());
 
-  public BooleanToken(final String bool) {
-    super(Boolean.parseBoolean(bool));
-  }
+    public BooleanToken(final String bool) {
+        super(Boolean.parseBoolean(bool));
+    }
 
 }

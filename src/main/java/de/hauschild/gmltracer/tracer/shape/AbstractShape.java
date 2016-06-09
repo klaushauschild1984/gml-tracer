@@ -31,81 +31,68 @@ import de.hauschild.gmltracer.tracer.impl.Ray;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public abstract class AbstractShape implements Shape {
 
-  private final SurfaceFunction surfaceFunction;
-  private RealMatrix transformation = MatrixUtils.createRealIdentityMatrix(4);
-  private RealMatrix inverseTransformation = MatrixUtils.inverse(transformation);
+    private final SurfaceFunction surfaceFunction;
+    private RealMatrix            transformation        = MatrixUtils.createRealIdentityMatrix(4);
+    private RealMatrix            inverseTransformation = MatrixUtils.inverse(transformation);
 
-  protected AbstractShape(final SurfaceFunction theSurfaceFunction) {
-    surfaceFunction = theSurfaceFunction;
-  }
-
-  public SurfaceFunction getSurfaceFunction() {
-    return surfaceFunction;
-  }
-
-  @Override
-  public final Intersection intersect(final Ray ray) {
-    return intersect(ray, null);
-  }
-
-  @Override
-  public final Intersection intersect(final Ray ray, final Shape shapeToIgnore) {
-    if (shapeToIgnore != null && shapeToIgnore == this) {
-      return null;
+    protected AbstractShape(final SurfaceFunction theSurfaceFunction) {
+        surfaceFunction = theSurfaceFunction;
     }
-    return intersectAfterIgnore(ray);
-  }
 
-  public abstract Vector3D objectCoordinates(final Vector3D intersection);
+    private SurfaceFunction getSurfaceFunction() {
+        return surfaceFunction;
+    }
 
-  @Override
-  public void translate(final double x, final double y, final double z) {
-    final RealMatrix translation = MatrixUtils.createRealMatrix(new double[][] {
-        {
-            1, 0, 0, x,
-        }, {
-            0, 1, 0, y,
-        }, {
-            0, 0, 1, z,
-        }, {
-            0, 0, 0, 1,
-        },
-    });
-    transformBy(translation);
-  }
+    @Override
+    public final Intersection intersect(final Ray ray) {
+        return intersect(ray, null);
+    }
 
-  protected SurfaceProperties getSurfaceProperties(final Vector3D intersection) {
-    final Vector3D objectCoordinates = objectCoordinates(intersection);
-    final SurfaceProperties surefaceProperties = getSurfaceFunction().apply((int) objectCoordinates.getX(), objectCoordinates.getY(),
-        objectCoordinates.getZ());
-    return surefaceProperties;
-  }
+    @Override
+    public final Intersection intersect(final Ray ray, final Shape shapeToIgnore) {
+        if (shapeToIgnore != null && shapeToIgnore == this) {
+            return null;
+        }
+        return intersectAfterIgnore(ray);
+    }
 
-  protected abstract Intersection intersectAfterIgnore(final Ray ray);
+    protected abstract Vector3D objectCoordinates(final Vector3D intersection);
 
-  protected Vector3D objectToWorld(final Vector3D point) {
-    return transform(transformation, point);
-  }
+    @Override
+    public void translate(final double x, final double y, final double z) {
+        final RealMatrix translation = MatrixUtils.createRealMatrix(new double[][] { { 1, 0, 0, x, }, { 0, 1, 0, y, },
+                { 0, 0, 1, z, }, { 0, 0, 0, 1, }, });
+        transformBy(translation);
+    }
 
-  protected Vector3D worldToObject(final Vector3D point) {
-    return transform(inverseTransformation, point);
-  }
+    protected SurfaceProperties getSurfaceProperties(final Vector3D intersection) {
+        final Vector3D objectCoordinates = objectCoordinates(intersection);
+        return getSurfaceFunction().apply((int) objectCoordinates.getX(),
+                objectCoordinates.getY(), objectCoordinates.getZ());
+    }
 
-  private Vector3D transform(final RealMatrix matrix, final Vector3D point) {
-    final double[] operated = matrix.operate(new double[] {
-        point.getX(), point.getY(), point.getZ(), 1.0,
-    });
-    return new Vector3D(operated[0], operated[1], operated[2]);
-  }
+    protected abstract Intersection intersectAfterIgnore(final Ray ray);
 
-  private void transformBy(final RealMatrix matrix) {
-    transformation = transformation.multiply(matrix);
-    inverseTransformation = MatrixUtils.inverse(transformation);
-  }
+    protected Vector3D objectToWorld(final Vector3D point) {
+        return transform(transformation, point);
+    }
+
+    protected Vector3D worldToObject(final Vector3D point) {
+        return transform(inverseTransformation, point);
+    }
+
+    private Vector3D transform(final RealMatrix matrix, final Vector3D point) {
+        final double[] operated = matrix.operate(new double[] { point.getX(), point.getY(), point.getZ(), 1.0, });
+        return new Vector3D(operated[0], operated[1], operated[2]);
+    }
+
+    private void transformBy(final RealMatrix matrix) {
+        transformation = transformation.multiply(matrix);
+        inverseTransformation = MatrixUtils.inverse(transformation);
+    }
 
 }

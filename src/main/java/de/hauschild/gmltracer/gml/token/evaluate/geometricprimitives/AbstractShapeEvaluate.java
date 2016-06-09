@@ -34,19 +34,18 @@ import de.hauschild.gmltracer.tracer.shape.Shape;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public abstract class AbstractShapeEvaluate<SHAPE extends Shape> extends AbstractSingleEvaluate<FunctionToken> {
 
-  protected abstract SHAPE createShape(final GmlSurfaceFunction surfaceFunction);
+    protected abstract SHAPE createShape(final GmlSurfaceFunction surfaceFunction);
 
-  @Override
-  protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final GmlSurfaceFunction surfaceFunction = new GmlSurfaceFunction(new FunctionToken(functionToken));
-    final SHAPE shape = createShape(surfaceFunction);
-    final ShapeToken sphereToken = new ShapeToken(shape);
-    tokenStack.push(sphereToken);
-  }
+    @Override
+    protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final GmlSurfaceFunction surfaceFunction = new GmlSurfaceFunction(new FunctionToken(functionToken));
+        final SHAPE shape = createShape(surfaceFunction);
+        final ShapeToken sphereToken = new ShapeToken(shape);
+        tokenStack.push(sphereToken);
+    }
 
 }

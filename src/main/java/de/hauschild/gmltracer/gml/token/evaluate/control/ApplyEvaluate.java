@@ -31,17 +31,16 @@ import de.hauschild.gmltracer.gml.token.evaluate.AbstractSingleEvaluate;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class ApplyEvaluate extends AbstractSingleEvaluate<FunctionToken> {
 
-  @Override
-  protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    final Map<String, Token> functionEnvironment = functionToken.getEnvironment();
-    for (final Token token : functionToken.getValue()) {
-      token.evaluate(tokenStack, functionEnvironment);
+    @Override
+    protected void evaluate(final FunctionToken functionToken, final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final Map<String, Token> functionEnvironment = functionToken.getEnvironment();
+        for (final Token token : functionToken.getValue()) {
+            token.evaluate(tokenStack, functionEnvironment);
+        }
     }
-  }
 
 }

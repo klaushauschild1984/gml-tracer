@@ -26,17 +26,18 @@ import org.testng.annotations.Test;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class GmlTracerTest {
 
-  @Test
-  public void threeSpheresTest() throws Exception {
-    GmlTracer.main(new String[] {
-      "src/test/resources/de/hauschild/gmltracer/gml/three-spheres.gml",
-    // "src/test/resources/de/hauschild/gmltracer/gml/samples/spheres2.gml",
-        });
-  }
+    @Test
+    public void threeSpheresTest() throws Exception {
+        GmlTracer.main(new String[] { "src/test/resources/de/hauschild/gmltracer/gml/three-spheres.gml", });
+    }
+
+    @Test
+    public void spheres2Test() throws Exception {
+        GmlTracer.main(new String[] { "src/test/resources/de/hauschild/gmltracer/gml/samples/spheres2.gml", });
+    }
 
 }

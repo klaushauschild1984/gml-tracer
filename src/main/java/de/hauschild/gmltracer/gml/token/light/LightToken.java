@@ -27,13 +27,12 @@ import de.hauschild.gmltracer.tracer.light.Light;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class LightToken extends AbstractValueToken<Light> {
 
-  public LightToken(final Light light) {
-    super(light);
-  }
+    public LightToken(final Light light) {
+        super(light);
+    }
 
 }

@@ -28,35 +28,34 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
-public abstract class AbstractContainerToken extends AbstractValueToken<List<Token>> {
+abstract class AbstractContainerToken extends AbstractValueToken<List<Token>> {
 
-  private static final String SPACE = " ";
+    private static final String SPACE = " ";
 
-  protected AbstractContainerToken(final List<Token> tokens) {
-    super(tokens);
-  }
-
-  @Override
-  public String toString() {
-    final StringBuilder builder = new StringBuilder();
-    builder.append(toStringBegin());
-    builder.append(SPACE);
-    for (final Token token : getValue()) {
-      builder.append(token);
-      builder.append(toStringSeparator());
+    AbstractContainerToken(final List<Token> tokens) {
+        super(tokens);
     }
-    builder.append(SPACE);
-    builder.append(toStringEnd());
-    return builder.toString();
-  }
 
-  protected abstract String toStringBegin();
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(toStringBegin());
+        builder.append(SPACE);
+        for (final Token token : getValue()) {
+            builder.append(token);
+            builder.append(toStringSeparator());
+        }
+        builder.append(SPACE);
+        builder.append(toStringEnd());
+        return builder.toString();
+    }
 
-  protected abstract String toStringEnd();
+    protected abstract String toStringBegin();
 
-  protected abstract String toStringSeparator();
+    protected abstract String toStringEnd();
+
+    protected abstract String toStringSeparator();
 
 }

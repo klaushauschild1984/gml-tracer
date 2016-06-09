@@ -24,7 +24,6 @@ package de.hauschild.gmltracer.tracer.light;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public abstract class AbstractLight implements Light {

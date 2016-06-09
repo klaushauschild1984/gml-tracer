@@ -28,29 +28,28 @@ import de.hauschild.gmltracer.tracer.impl.Ray;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public final class Vector3DUtils {
 
-  public static Vector3D multiplyComponentwise(final Vector3D a, final Vector3D b) {
-    return new Vector3D(a.getX() * b.getX(), a.getY() * b.getY(), a.getZ() * b.getZ());
-  }
+    private Vector3DUtils() {
+    }
 
-  public static Ray reflectRay(final Ray ray, final Vector3D normal) {
-    // vector of incoming ray
-    final Vector3D vector = new Vector3D(ray.getEnd().getX() - ray.getBegin().getX(), ray.getEnd().getY() - ray.getBegin().getY(), ray
-        .getEnd().getZ() - ray.getBegin().getZ());
-    // dot product of incoming ray vector and surface normal
-    final double dotProduct = Vector3D.dotProduct(vector, normal);
-    // reflected vector
-    final Vector3D reflectedVector = new Vector3D(-vector.getX() + 2 * normal.getX() * dotProduct, -vector.getY() + 2 * normal.getY()
-        * dotProduct, -vector.getZ() + 2 * normal.getZ() * dotProduct);
-    // reflected ray
-    return new Ray(ray.getEnd(), ray.getEnd().add(reflectedVector));
-  }
+    public static Vector3D multiplyComponentwise(final Vector3D a, final Vector3D b) {
+        return new Vector3D(a.getX() * b.getX(), a.getY() * b.getY(), a.getZ() * b.getZ());
+    }
 
-  private Vector3DUtils() {
-  }
+    public static Ray reflectRay(final Ray ray, final Vector3D normal) {
+        // vector of incoming ray
+        final Vector3D vector = new Vector3D(ray.getEnd().getX() - ray.getBegin().getX(), ray.getEnd().getY()
+                - ray.getBegin().getY(), ray.getEnd().getZ() - ray.getBegin().getZ());
+        // dot product of incoming ray vector and surface normal
+        final double dotProduct = Vector3D.dotProduct(vector, normal);
+        // reflected vector
+        final Vector3D reflectedVector = new Vector3D(-vector.getX() + 2 * normal.getX() * dotProduct, -vector.getY() + 2
+                * normal.getY() * dotProduct, -vector.getZ() + 2 * normal.getZ() * dotProduct);
+        // reflected ray
+        return new Ray(ray.getEnd(), ray.getEnd().add(reflectedVector));
+    }
 
 }

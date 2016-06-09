@@ -27,14 +27,13 @@ import de.hauschild.gmltracer.tracer.shape.tier1.Sphere;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class SphereEvaluate extends AbstractShapeEvaluate<Sphere> {
 
-  @Override
-  protected Sphere createShape(final GmlSurfaceFunction surfaceFunction) {
-    return new Sphere(surfaceFunction);
-  }
+    @Override
+    protected Sphere createShape(final GmlSurfaceFunction surfaceFunction) {
+        return new Sphere(surfaceFunction);
+    }
 
 }

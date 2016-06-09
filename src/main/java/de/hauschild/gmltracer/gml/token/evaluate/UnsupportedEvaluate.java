@@ -29,15 +29,14 @@ import de.hauschild.gmltracer.gml.token.Token;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 @Deprecated
 public class UnsupportedEvaluate implements Evaluate {
 
-  @Override
-  public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
-    throw new UnsupportedOperationException();
-  }
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        throw new UnsupportedOperationException();
+    }
 
 }

@@ -24,11 +24,10 @@ package de.hauschild.gmltracer.tracer.shape;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public interface SurfaceFunction {
 
-  SurfaceProperties apply(final int face, final double u, final double v);
+    SurfaceProperties apply(final int face, final double u, final double v);
 
 }

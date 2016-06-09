@@ -24,17 +24,16 @@ package de.hauschild.gmltracer.gml.token.base;
 
 /**
  * @since 1.0
- * 
  * @author Klaus Hauschild
  */
 public class NumberToken extends AbstractValueToken<Double> {
 
-  public NumberToken(final double value) {
-    super(value);
-  }
+    public NumberToken(final double value) {
+        super(value);
+    }
 
-  public NumberToken(final String number) {
-    super(Double.parseDouble(number));
-  }
+    public NumberToken(final String number) {
+        super(Double.parseDouble(number));
+    }
 
 }
