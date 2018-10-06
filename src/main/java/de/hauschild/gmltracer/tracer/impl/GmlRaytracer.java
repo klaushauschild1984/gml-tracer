@@ -1,24 +1,22 @@
 /*
- * Copyright (c) 2014, Klaus Hauschild
- * All rights reserved.
+ * Copyright (c) 2014, Klaus Hauschild All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided
- * that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ * following conditions are met:
  *
- *   * Redistributions of source code must retain the above copyright notice, this list of conditions and
- *     the following disclaimer.
+ * * Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+ * disclaimer.
  *
- *   * Redistributions in binary form must reproduce the above copyright notice, this list of conditions
- *     and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+ * disclaimer in the documentation and/or other materials provided with the distribution.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
- * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package de.hauschild.gmltracer.tracer.impl;
 
@@ -61,13 +59,14 @@ import de.hauschild.gmltracer.tracer.shape.SurfaceProperties;
  */
 public class GmlRaytracer implements Raytracer {
 
-    private static final Logger   LOGGER          = LoggerFactory.getLogger(GmlRaytracer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GmlRaytracer.class);
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     @Override
-    public void render(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
-            final double fieldOfView, final int width, final int height, final String fileName) {
+    public void render(final Vector3D ambientLightIntensity, final List<Light> lights,
+                    final Shape scene, final int depth, final double fieldOfView, final int width,
+                    final int height, final String fileName) {
         final double aspectRatio = (double) height / width;
         final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         LOGGER.info("begin raytracing...");
@@ -126,8 +125,8 @@ public class GmlRaytracer implements Raytracer {
 
                 @Override
                 public void run() {
-                    final Color color = renderPoint(ambientLightIntensity, lights, scene, depth, fieldOfView, width, height,
-                            point);
+                    final Color color = renderPoint(ambientLightIntensity, lights, scene, depth,
+                                    fieldOfView, width, height, point);
                     synchronized (image) {
                         final Graphics graphics = image.getGraphics();
                         graphics.setColor(color);
@@ -166,19 +165,21 @@ public class GmlRaytracer implements Raytracer {
         return new Color(r, g, b);
     }
 
-    private Color renderPoint(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene, final int depth,
-            final double fieldOfView, final int width, final int height, final Point point) {
+    private Color renderPoint(final Vector3D ambientLightIntensity, final List<Light> lights,
+                    final Shape scene, final int depth, final double fieldOfView, final int width,
+                    final int height, final Point point) {
         final double worldWidth = 2.0 * Math.tan(Math.toRadians(0.5 * fieldOfView));
         final double worldHeight = worldWidth * width / height;
         final double pixelSize = worldWidth / width;
-        final Ray ray = new Ray(new Vector3D(0.0, 0.0, -1.0), new Vector3D(-(worldWidth - 2 * (point.x + 0.5) * pixelSize),
-                worldHeight - 2 * (point.y + 0.5) * pixelSize, 1.0));
+        final Ray ray = new Ray(new Vector3D(0.0, 0.0, -1.0),
+                        new Vector3D(-(worldWidth - 2 * (point.x + 0.5) * pixelSize),
+                                        worldHeight - 2 * (point.y + 0.5) * pixelSize, 1.0));
         final Vector3D color = renderRay(ambientLightIntensity, lights, scene, depth, ray);
         return convert(color);
     }
 
-    private Vector3D renderRay(final Vector3D ambientLightIntensity, final List<Light> lights, final Shape scene,
-            final int depth, final Ray ray) {
+    private Vector3D renderRay(final Vector3D ambientLightIntensity, final List<Light> lights,
+                    final Shape scene, final int depth, final Ray ray) {
         if (depth == 0) {
             return Vector3D.ZERO;
         }
@@ -188,22 +189,26 @@ public class GmlRaytracer implements Raytracer {
         }
         final SurfaceProperties surfaceProperties = intersection.getSurfaceProperties();
         // ambient color
-        final Vector3D ambientColor = Vector3DUtils.multiplyComponentwise(surfaceProperties.getColor(), ambientLightIntensity)
-                .scalarMultiply(surfaceProperties.getDiffuseReflectionCoefficient());
+        final Vector3D ambientColor = Vector3DUtils
+                        .multiplyComponentwise(surfaceProperties.getColor(), ambientLightIntensity)
+                        .scalarMultiply(surfaceProperties.getDiffuseReflectionCoefficient());
         // light color
         Vector3D lightColor = Vector3D.ZERO;
         for (final Light light : lights) {
             // if (!light.isInShadow(scene, intersection)) {
-            final Vector3D currentLightColor = light.illuminates(surfaceProperties.getColor(), intersection);
+            final Vector3D currentLightColor =
+                            light.illuminates(surfaceProperties.getColor(), intersection);
             lightColor = lightColor.add(currentLightColor);
             // }
         }
         lightColor = lightColor.scalarMultiply(surfaceProperties.getDiffuseReflectionCoefficient());
         // specular color for reflected ray
         final Ray reflectedRay = Vector3DUtils.reflectRay(ray, intersection.getNormal());
-        Vector3D specularColor = renderRay(ambientLightIntensity, lights, scene, depth - 1, reflectedRay);
-        specularColor = Vector3DUtils.multiplyComponentwise(specularColor, surfaceProperties.getColor()).scalarMultiply(
-                surfaceProperties.getSpecularReflectionCoefficient());
+        Vector3D specularColor =
+                        renderRay(ambientLightIntensity, lights, scene, depth - 1, reflectedRay);
+        specularColor = Vector3DUtils
+                        .multiplyComponentwise(specularColor, surfaceProperties.getColor())
+                        .scalarMultiply(surfaceProperties.getSpecularReflectionCoefficient());
         // compute color
         return ambientColor.add(lightColor).add(specularColor);
     }

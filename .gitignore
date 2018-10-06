@@ -1,6 +1,3 @@
-/.project
 /target
-/.settings
-/.classpath
-/.checkstyle
 /.idea
+/gml-tracer.iml
