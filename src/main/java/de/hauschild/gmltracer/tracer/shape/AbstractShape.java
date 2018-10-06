@@ -23,7 +23,6 @@ package de.hauschild.gmltracer.tracer.shape;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-
 import de.hauschild.gmltracer.tracer.impl.Intersection;
 import de.hauschild.gmltracer.tracer.impl.Ray;
 
@@ -48,7 +47,7 @@ public abstract class AbstractShape implements Shape {
 
     @Override
     public final Intersection intersect(final Ray ray, final Shape shapeToIgnore) {
-        if (shapeToIgnore != null && shapeToIgnore == this) {
+        if (shapeToIgnore == this) {
             return null;
         }
         return intersectAfterIgnore(ray);
@@ -56,9 +55,63 @@ public abstract class AbstractShape implements Shape {
 
     @Override
     public void translate(final double x, final double y, final double z) {
-        final RealMatrix translation = MatrixUtils.createRealMatrix(new double[][] {{1, 0, 0, x,},
-                {0, 1, 0, y,}, {0, 0, 1, z,}, {0, 0, 0, 1,},});
+        final RealMatrix translation = MatrixUtils.createRealMatrix(new double[][] { //
+                {1, 0, 0, x,}, //
+                {0, 1, 0, y,}, //
+                {0, 0, 1, z,}, //
+                {0, 0, 0, 1,}, //
+        });
         transformBy(translation);
+    }
+
+    @Override
+    public void scale(final double x, final double y, final double z) {
+        final RealMatrix scaling = MatrixUtils.createRealMatrix(new double[][] { //
+                {x, 0, 0, 0,}, //
+                {0, y, 0, 0,}, //
+                {0, 0, z, 0,}, //
+                {0, 0, 0, 1,}, //
+        });
+        transformBy(scaling);
+    }
+
+    @Override
+    public void rotateX(final double value) {
+        final double cos = Math.cos(value);
+        final double sin = Math.sin(value);
+        final RealMatrix rotation = MatrixUtils.createRealMatrix(new double[][] { //
+                {1, 0, 0, 0,}, //
+                {0, cos, -sin, 0,}, //
+                {0, sin, -cos, 0,}, //
+                {0, 0, 0, 1,}, //
+        });
+        transformBy(rotation);
+    }
+
+    @Override
+    public void rotateY(final double value) {
+        final double cos = Math.cos(value);
+        final double sin = Math.sin(value);
+        final RealMatrix rotation = MatrixUtils.createRealMatrix(new double[][] { //
+                {cos, 0, sin, 0,}, //
+                {0, 1, 0, 0,}, //
+                {-sin, 0, cos, 0,}, //
+                {0, 0, 0, 1,}, //
+        });
+        transformBy(rotation);
+    }
+
+    @Override
+    public void rotateZ(final double value) {
+        final double cos = Math.cos(value);
+        final double sin = Math.sin(value);
+        final RealMatrix rotation = MatrixUtils.createRealMatrix(new double[][] { //
+                {cos, -sin, 0, 0,}, //
+                {sin, cos, 0, 0,}, //
+                {0, 0, 1, 0,}, //
+                {0, 0, 0, 1,}, //
+        });
+        transformBy(rotation);
     }
 
     protected abstract Vector3D objectCoordinates(final Vector3D intersection);

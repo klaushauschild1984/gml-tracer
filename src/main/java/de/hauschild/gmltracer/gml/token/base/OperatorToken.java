@@ -22,22 +22,32 @@ package de.hauschild.gmltracer.gml.token.base;
 
 import java.util.Map;
 import java.util.Stack;
-
 import de.hauschild.gmltracer.gml.token.Token;
 import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.UnsupportedEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.array.GetEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.array.LengthEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.constructive.UnionEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.control.ApplyEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.control.IfEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.geometricprimitives.PlaneEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.geometricprimitives.SphereEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.light.DirectionalLightEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.number.AddEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.number.DivEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.number.EqEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.number.LessEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.number.ModEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.number.MulEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.number.SubEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.point.PointEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.render.RenderEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.transformations.RotateXEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.transformations.RotateYEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.transformations.RotateZEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.transformations.ScaleEvaluate;
 import de.hauschild.gmltracer.gml.token.evaluate.transformations.TranslateEvaluate;
+import de.hauschild.gmltracer.gml.token.evaluate.transformations.UniformScaleEvaluate;
 
 /**
  * @since 1.0
@@ -69,21 +79,21 @@ public class OperatorToken implements Token {
         APPLY(new ApplyEvaluate()),
 
         // number operators
-        ADDI(new UnsupportedEvaluate()), //
-        ADDF(new UnsupportedEvaluate()), //
+        ADDI(new AddEvaluate()), //
+        ADDF(new AddEvaluate()), //
         ACOS(new UnsupportedEvaluate()), //
         ASIN(new UnsupportedEvaluate()), //
         CLAMPF(new UnsupportedEvaluate()), //
         COS(new UnsupportedEvaluate()), //
-        DIVI(new UnsupportedEvaluate()), //
-        DIVF(new UnsupportedEvaluate()), //
-        EQI(new UnsupportedEvaluate()), //
-        EQF(new UnsupportedEvaluate()), //
+        DIVI(new DivEvaluate()), //
+        DIVF(new DivEvaluate()), //
+        EQI(new EqEvaluate()), //
+        EQF(new EqEvaluate()), //
         FLOOR(new UnsupportedEvaluate()), //
         FRAC(new UnsupportedEvaluate()), //
         LESSI(new LessEvaluate()), //
         LESSF(new LessEvaluate()), //
-        MODI(new UnsupportedEvaluate()), //
+        MODI(new ModEvaluate()), //
         MULI(new MulEvaluate()), //
         MULF(new MulEvaluate()), //
         NEGI(new UnsupportedEvaluate()), //
@@ -101,8 +111,8 @@ public class OperatorToken implements Token {
         POINT(new PointEvaluate()),
 
         // array operators
-        GET(new UnsupportedEvaluate()), //
-        LENGTH(new UnsupportedEvaluate()),
+        GET(new GetEvaluate()), //
+        LENGTH(new LengthEvaluate()),
 
         // geometric primitive operators
         SPHERE(new SphereEvaluate()), //
@@ -113,11 +123,11 @@ public class OperatorToken implements Token {
 
         // transformation operators
         TRANSLATE(new TranslateEvaluate()), //
-        SCALE(new UnsupportedEvaluate()), //
-        USCALE(new UnsupportedEvaluate()), //
-        ROTATEX(new UnsupportedEvaluate()), //
-        ROTATEY(new UnsupportedEvaluate()), //
-        ROTATEZ(new UnsupportedEvaluate()),
+        SCALE(new ScaleEvaluate()), //
+        USCALE(new UniformScaleEvaluate()), //
+        ROTATEX(new RotateXEvaluate()), //
+        ROTATEY(new RotateYEvaluate()), //
+        ROTATEZ(new RotateZEvaluate()),
 
         // light operators
         LIGHT(new DirectionalLightEvaluate()), //

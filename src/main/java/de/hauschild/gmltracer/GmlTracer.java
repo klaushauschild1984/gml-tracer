@@ -20,14 +20,15 @@
  */
 package de.hauschild.gmltracer;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
-
+import java.io.InputStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BaseErrorListener;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
-
 import de.hauschild.gmltracer.gml.GMLExtractor;
 import de.hauschild.gmltracer.gml.GMLInterpreter;
 import de.hauschild.gmltracer.gml.GMLLexer;
@@ -40,8 +41,14 @@ import de.hauschild.gmltracer.gml.GMLParser;
 class GmlTracer {
 
     public static void main(final String[] args) throws Exception {
-        final FileInputStream fileInputStream = new FileInputStream(args[0]);
-        final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(fileInputStream));
+        try (final InputStream stream =
+                        new BufferedInputStream(new FileInputStream(new File(args[0])))) {
+            render(stream);
+        }
+    }
+
+    public static void render(final InputStream stream) throws Exception {
+        final GMLLexer gmlLexer = new GMLLexer(new ANTLRInputStream(stream));
         final GMLParser gmlParser = new GMLParser(new CommonTokenStream(gmlLexer));
         gmlParser.addErrorListener(new BaseErrorListener() {
 

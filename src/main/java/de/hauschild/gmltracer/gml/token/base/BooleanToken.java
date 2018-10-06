@@ -30,7 +30,11 @@ public class BooleanToken extends AbstractValueToken<Boolean> {
     public static final BooleanToken FALSE = new BooleanToken(Boolean.FALSE.toString());
 
     public BooleanToken(final String bool) {
-        super(Boolean.parseBoolean(bool));
+        this(Boolean.parseBoolean(bool));
+    }
+
+    public BooleanToken(final boolean bool) {
+        super(bool);
     }
 
 }

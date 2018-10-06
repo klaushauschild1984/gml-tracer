@@ -18,47 +18,29 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer;
+package de.hauschild.gmltracer.gml.token.evaluate.transformations;
 
-import java.io.InputStream;
-import org.testng.annotations.Test;
+import java.util.Map;
+import java.util.Stack;
+import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.base.NumberToken;
+import de.hauschild.gmltracer.gml.token.evaluate.Evaluate;
+import de.hauschild.gmltracer.gml.token.geometry.ShapeToken;
 
 /**
  * @since 1.0
  * @author Klaus Hauschild
  */
-public class GmlTracerTest {
+public class ScaleEvaluate implements Evaluate {
 
-    @Test
-    public void threeSpheresTest() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                        "de/hauschild/gmltracer/gml/samples/three-spheres.gml")) {
-            GmlTracer.render(stream);
-        }
-    }
-
-    @Test
-    public void spheres2Test() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                        "de/hauschild/gmltracer/gml/samples/spheres2.gml")) {
-            GmlTracer.render(stream);
-        }
-    }
-
-    @Test
-    public void checkedCubeTest() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                        "de/hauschild/gmltracer/gml/samples/checked-cube.gml")) {
-            GmlTracer.render(stream);
-        }
-    }
-
-    @Test
-    public void fractalTest() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                "de/hauschild/gmltracer/gml/samples/fractal.gml")) {
-            GmlTracer.render(stream);
-        }
+    @Override
+    public void evaluate(final Stack<Token> tokenStack, final Map<String, Token> environment) {
+        final NumberToken scalingX = (NumberToken) tokenStack.pop();
+        final NumberToken scalingY = (NumberToken) tokenStack.pop();
+        final NumberToken scalingZ = (NumberToken) tokenStack.pop();
+        final ShapeToken shapeToken = (ShapeToken) tokenStack.pop();
+        shapeToken.getValue().scale(scalingX.getValue(), scalingY.getValue(), scalingZ.getValue());
+        tokenStack.push(shapeToken);
     }
 
 }

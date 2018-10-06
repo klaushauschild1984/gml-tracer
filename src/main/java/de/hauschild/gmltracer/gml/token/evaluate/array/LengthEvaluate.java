@@ -18,47 +18,26 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package de.hauschild.gmltracer;
+package de.hauschild.gmltracer.gml.token.evaluate.array;
 
-import java.io.InputStream;
-import org.testng.annotations.Test;
+import java.util.Map;
+import java.util.Stack;
+import de.hauschild.gmltracer.gml.token.Token;
+import de.hauschild.gmltracer.gml.token.base.ArrayToken;
+import de.hauschild.gmltracer.gml.token.base.NumberToken;
+import de.hauschild.gmltracer.gml.token.evaluate.AbstractSingleEvaluate;
 
 /**
  * @since 1.0
  * @author Klaus Hauschild
  */
-public class GmlTracerTest {
+public class LengthEvaluate extends AbstractSingleEvaluate<ArrayToken> {
 
-    @Test
-    public void threeSpheresTest() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                        "de/hauschild/gmltracer/gml/samples/three-spheres.gml")) {
-            GmlTracer.render(stream);
-        }
-    }
-
-    @Test
-    public void spheres2Test() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                        "de/hauschild/gmltracer/gml/samples/spheres2.gml")) {
-            GmlTracer.render(stream);
-        }
-    }
-
-    @Test
-    public void checkedCubeTest() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                        "de/hauschild/gmltracer/gml/samples/checked-cube.gml")) {
-            GmlTracer.render(stream);
-        }
-    }
-
-    @Test
-    public void fractalTest() throws Exception {
-        try (final InputStream stream = ClassLoader.getSystemResourceAsStream(
-                "de/hauschild/gmltracer/gml/samples/fractal.gml")) {
-            GmlTracer.render(stream);
-        }
+    @Override
+    protected void evaluate(final ArrayToken token, final Stack<Token> tokenStack,
+                    final Map<String, Token> environment) {
+        final int length = token.getValue().size();
+        tokenStack.push(new NumberToken(length));
     }
 
 }

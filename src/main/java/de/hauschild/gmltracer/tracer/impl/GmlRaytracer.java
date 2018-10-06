@@ -35,18 +35,14 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Stopwatch;
-
 import de.hauschild.gmltracer.tracer.Raytracer;
 import de.hauschild.gmltracer.tracer.Vector3DUtils;
 import de.hauschild.gmltracer.tracer.light.Light;
@@ -121,20 +117,15 @@ public class GmlRaytracer implements Raytracer {
         final Stopwatch stopwatch = Stopwatch.createStarted();
         while (pointIterator.hasNext()) {
             final Point point = pointIterator.next();
-            executorService.execute(new Runnable() {
-
-                @Override
-                public void run() {
-                    final Color color = renderPoint(ambientLightIntensity, lights, scene, depth,
-                                    fieldOfView, width, height, point);
-                    synchronized (image) {
-                        final Graphics graphics = image.getGraphics();
-                        graphics.setColor(color);
-                        graphics.drawLine(point.x, point.y, point.x, point.y);
-                        preview.repaint();
-                    }
+            executorService.execute(() -> {
+                final Color color = renderPoint(ambientLightIntensity, lights, scene, depth,
+                                fieldOfView, width, height, point);
+                synchronized (image) {
+                    final Graphics graphics = image.getGraphics();
+                    graphics.setColor(color);
+                    graphics.drawLine(point.x, point.y, point.x, point.y);
+                    preview.repaint();
                 }
-
             });
         }
         executorService.shutdown();

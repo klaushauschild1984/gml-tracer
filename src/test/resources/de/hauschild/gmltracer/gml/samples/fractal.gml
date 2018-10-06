@@ -33,7 +33,7 @@
   /self /col /depth /base
   depth 0 eqi
   { colors col get base apply 0.9 uscale }
-  { 
+  {
     col incrmod apply /col
     colors col get base apply
     col incrmod apply /col
@@ -77,11 +77,12 @@ p 0.0 -1.0 0.0 translate union
 0.8 -1.0 0.4 point		  % direction
 0.6  0.6 0.5 point light /l1	  % directional light
 
-0.0 1.5 -0.4 point  % origin
-0.4 0.5 0.6 point pointlight /l2
+% 0.0 1.5 -0.4 point  % origin
+% 0.4 0.5 0.6 point pointlight /l2
 
 0.5 0.5 0.5 point		  % ambient light
-[ l1 l2 ]				  % lights
+% [ l1 l2 ]				  % lights
+[ l1 ]
 scene				  % scene to render
 20				  % tracing depth
 90.0				  % field of view

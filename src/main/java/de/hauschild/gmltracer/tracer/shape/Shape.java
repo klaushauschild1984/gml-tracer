@@ -35,4 +35,15 @@ public interface Shape {
 
     void translate(double x, double y, double z);
 
+    default void uniformScale(double value) {
+        scale(value, value, value);
+    }
+
+    void rotateX(double value);
+
+    void rotateY(double value);
+
+    void rotateZ(double value);
+
+    void scale(double x, double y, double z);
 }
